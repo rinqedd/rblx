@@ -1,145 +1,147 @@
-local Voicelines = Instance.new("ScreenGui",game.CoreGui)
-Voicelines.Enabled = false
-local Main = Instance.new("ImageLabel")
-local BarBottomFill = Instance.new("Frame")
-local Bar = Instance.new("ImageLabel")
-local TextLabel = Instance.new("TextLabel")
-local Container = Instance.new("Frame")
-local UIGridLayout = Instance.new("UIGridLayout")
-local UIPadding = Instance.new("UIPadding")
-local Examples = Instance.new("Frame")
-local Button = Instance.new("TextButton")
-local Button_Roundify = Instance.new("ImageLabel")
+if not game.CoreGui:FindFirstChild("Voicelines") then
+  local Voicelines = Instance.new("ScreenGui",game.CoreGui)
+  Voicelines.Enabled = false
+  local Main = Instance.new("ImageLabel")
+  local BarBottomFill = Instance.new("Frame")
+  local Bar = Instance.new("ImageLabel")
+  local TextLabel = Instance.new("TextLabel")
+  local Container = Instance.new("Frame")
+  local UIGridLayout = Instance.new("UIGridLayout")
+  local UIPadding = Instance.new("UIPadding")
+  local Examples = Instance.new("Frame")
+  local Button = Instance.new("TextButton")
+  local Button_Roundify = Instance.new("ImageLabel")
 
-Voicelines.Name = "Voicelines"
+  Voicelines.Name = "Voicelines"
 
-Main.Name = "Main"
-Main.Parent = Voicelines
-Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Main.BackgroundTransparency = 1.000
-Main.BorderSizePixel = 0
-Main.Position = UDim2.new(0.376856923, 0, 0.196018368, 0)
-Main.Size = UDim2.new(0, 315, 0, 396)
-Main.Image = "rbxassetid://3570695787"
-Main.ImageColor3 = Color3.fromRGB(17, 17, 17)
-Main.ImageTransparency = 0.500
-Main.ScaleType = Enum.ScaleType.Slice
-Main.SliceCenter = Rect.new(100, 100, 100, 100)
-Main.SliceScale = 0.120
+  Main.Name = "Main"
+  Main.Parent = Voicelines
+  Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+  Main.BackgroundTransparency = 1.000
+  Main.BorderSizePixel = 0
+  Main.Position = UDim2.new(0.376856923, 0, 0.196018368, 0)
+  Main.Size = UDim2.new(0, 315, 0, 396)
+  Main.Image = "rbxassetid://3570695787"
+  Main.ImageColor3 = Color3.fromRGB(17, 17, 17)
+  Main.ImageTransparency = 0.500
+  Main.ScaleType = Enum.ScaleType.Slice
+  Main.SliceCenter = Rect.new(100, 100, 100, 100)
+  Main.SliceScale = 0.120
 
-local UserInputService = game:GetService("UserInputService")
+  local UserInputService = game:GetService("UserInputService")
 
-local gui = Main
+  local gui = Main
 
-local dragging
-local dragInput
-local dragStart
-local startPos
+  local dragging
+  local dragInput
+  local dragStart
+  local startPos
 
-local function update(input)
-  local delta = input.Position - dragStart
-  gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+  local function update(input)
+    local delta = input.Position - dragStart
+    gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+  end
+
+  gui.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+      dragging = true
+      dragStart = input.Position
+      startPos = gui.Position
+
+      input.Changed:Connect(function()
+        if input.UserInputState == Enum.UserInputState.End then
+          dragging = false
+        end
+      end)
+    end
+  end)
+
+  gui.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+      dragInput = input
+    end
+  end)
+
+  UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+      update(input)
+    end
+  end)
+
+  BarBottomFill.Name = "BarBottomFill"
+  BarBottomFill.Parent = Main
+  BarBottomFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+  BarBottomFill.BorderSizePixel = 0
+  BarBottomFill.Position = UDim2.new(0, 0, 0.0454545468, 0)
+  BarBottomFill.Size = UDim2.new(0, 315, 0, 33)
+
+  Bar.Name = "Bar"
+  Bar.Parent = Main
+  Bar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+  Bar.BackgroundTransparency = 1.000
+  Bar.BorderSizePixel = 0
+  Bar.Size = UDim2.new(0, 315, 0, 51)
+  Bar.Image = "rbxassetid://3570695787"
+  Bar.ScaleType = Enum.ScaleType.Slice
+  Bar.SliceCenter = Rect.new(100, 100, 100, 100)
+  Bar.SliceScale = 0.120
+
+  TextLabel.Parent = Bar
+  TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+  TextLabel.BackgroundTransparency = 1.000
+  TextLabel.BorderSizePixel = 0
+  TextLabel.Size = UDim2.new(0, 315, 0, 51)
+  TextLabel.Font = Enum.Font.Cartoon
+  TextLabel.Text = "Voicelines"
+  TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+  TextLabel.TextSize = 30.000
+
+  Container.Name = "Container"
+  Container.Parent = Main
+  Container.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+  Container.BackgroundTransparency = 1.000
+  Container.BorderSizePixel = 0
+  Container.Position = UDim2.new(0, 0, 0.128787875, 0)
+  Container.Size = UDim2.new(0, 315, 0, 345)
+
+  UIGridLayout.Parent = Container
+  UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
+  UIGridLayout.CellPadding = UDim2.new(0, 9, 0, 10)
+  UIGridLayout.CellSize = UDim2.new(0.469999999, 0, 0.138999999, 0)
+
+  UIPadding.Parent = Container
+  UIPadding.PaddingLeft = UDim.new(0.0299999993, 0)
+  UIPadding.PaddingTop = UDim.new(0.0199999996, 0)
+
+  Examples.Name = "Examples"
+  Examples.Parent = Main
+  Examples.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+  Examples.Size = UDim2.new(0, 100, 0, 100)
+  Examples.Visible = false
+
+  Button.Name = "Button"
+  Button.Parent = Examples
+  Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+  Button.BackgroundTransparency = 1.000
+  Button.BorderSizePixel = 0
+  Button.Position = UDim2.new(0.703649163, 0, 0.121265896, 0)
+  Button.Size = UDim2.new(0, 200, 0, 50)
+  Button.ZIndex = 2
+  Button.Font = Enum.Font.Cartoon
+  Button.TextColor3 = Color3.fromRGB(0, 0, 0)
+  Button.TextSize = 13.5
+
+  Button_Roundify.Name = "Button_Roundify"
+  Button_Roundify.Parent = Button
+  Button_Roundify.Active = true
+  Button_Roundify.AnchorPoint = Vector2.new(0.5, 0.5)
+  Button_Roundify.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+  Button_Roundify.BackgroundTransparency = 1.000
+  Button_Roundify.Position = UDim2.new(0.5, 0, 0.5, 0)
+  Button_Roundify.Selectable = true
+  Button_Roundify.Size = UDim2.new(1, 0, 1, 0)
+  Button_Roundify.Image = "rbxassetid://3570695787"
+  Button_Roundify.ScaleType = Enum.ScaleType.Slice
+  Button_Roundify.SliceCenter = Rect.new(100, 100, 100, 100)
+  Button_Roundify.SliceScale = 0.120
 end
-
-gui.InputBegan:Connect(function(input)
-  if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-    dragging = true
-    dragStart = input.Position
-    startPos = gui.Position
-
-    input.Changed:Connect(function()
-      if input.UserInputState == Enum.UserInputState.End then
-        dragging = false
-      end
-    end)
-  end
-end)
-
-gui.InputChanged:Connect(function(input)
-  if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-    dragInput = input
-  end
-end)
-
-UserInputService.InputChanged:Connect(function(input)
-  if input == dragInput and dragging then
-    update(input)
-  end
-end)
-
-BarBottomFill.Name = "BarBottomFill"
-BarBottomFill.Parent = Main
-BarBottomFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-BarBottomFill.BorderSizePixel = 0
-BarBottomFill.Position = UDim2.new(0, 0, 0.0454545468, 0)
-BarBottomFill.Size = UDim2.new(0, 315, 0, 33)
-
-Bar.Name = "Bar"
-Bar.Parent = Main
-Bar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Bar.BackgroundTransparency = 1.000
-Bar.BorderSizePixel = 0
-Bar.Size = UDim2.new(0, 315, 0, 51)
-Bar.Image = "rbxassetid://3570695787"
-Bar.ScaleType = Enum.ScaleType.Slice
-Bar.SliceCenter = Rect.new(100, 100, 100, 100)
-Bar.SliceScale = 0.120
-
-TextLabel.Parent = Bar
-TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TextLabel.BackgroundTransparency = 1.000
-TextLabel.BorderSizePixel = 0
-TextLabel.Size = UDim2.new(0, 315, 0, 51)
-TextLabel.Font = Enum.Font.Cartoon
-TextLabel.Text = "Voicelines"
-TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
-TextLabel.TextSize = 30.000
-
-Container.Name = "Container"
-Container.Parent = Main
-Container.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Container.BackgroundTransparency = 1.000
-Container.BorderSizePixel = 0
-Container.Position = UDim2.new(0, 0, 0.128787875, 0)
-Container.Size = UDim2.new(0, 315, 0, 345)
-
-UIGridLayout.Parent = Container
-UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UIGridLayout.CellPadding = UDim2.new(0, 9, 0, 10)
-UIGridLayout.CellSize = UDim2.new(0.469999999, 0, 0.138999999, 0)
-
-UIPadding.Parent = Container
-UIPadding.PaddingLeft = UDim.new(0.0299999993, 0)
-UIPadding.PaddingTop = UDim.new(0.0199999996, 0)
-
-Examples.Name = "Examples"
-Examples.Parent = Main
-Examples.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Examples.Size = UDim2.new(0, 100, 0, 100)
-Examples.Visible = false
-
-Button.Name = "Button"
-Button.Parent = Examples
-Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Button.BackgroundTransparency = 1.000
-Button.BorderSizePixel = 0
-Button.Position = UDim2.new(0.703649163, 0, 0.121265896, 0)
-Button.Size = UDim2.new(0, 200, 0, 50)
-Button.ZIndex = 2
-Button.Font = Enum.Font.Cartoon
-Button.TextColor3 = Color3.fromRGB(0, 0, 0)
-Button.TextSize = 13.5
-
-Button_Roundify.Name = "Button_Roundify"
-Button_Roundify.Parent = Button
-Button_Roundify.Active = true
-Button_Roundify.AnchorPoint = Vector2.new(0.5, 0.5)
-Button_Roundify.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Button_Roundify.BackgroundTransparency = 1.000
-Button_Roundify.Position = UDim2.new(0.5, 0, 0.5, 0)
-Button_Roundify.Selectable = true
-Button_Roundify.Size = UDim2.new(1, 0, 1, 0)
-Button_Roundify.Image = "rbxassetid://3570695787"
-Button_Roundify.ScaleType = Enum.ScaleType.Slice
-Button_Roundify.SliceCenter = Rect.new(100, 100, 100, 100)
-Button_Roundify.SliceScale = 0.120
