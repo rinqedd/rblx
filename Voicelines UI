@@ -9,7 +9,7 @@ local UIGridLayout = Instance.new("UIGridLayout")
 local UIPadding = Instance.new("UIPadding")
 local Examples = Instance.new("Frame")
 local Button = Instance.new("TextButton")
-local Button_Roundify_12px = Instance.new("ImageLabel")
+local Button_Roundify = Instance.new("ImageLabel")
 
 Voicelines.Name = "Voicelines"
 
