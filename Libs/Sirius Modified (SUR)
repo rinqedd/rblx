@@ -255,7 +255,7 @@ function EspLibrary.Init()
         EspLibrary.AddEsp(player)
     end))
 
-    insert(EspLibrary.conns, workspace.Living:Connect(function(player)
+    insert(EspLibrary.conns, workspace.Living.ChildAdded:Connect(function(player)
         EspLibrary.RemoveEsp(player)
     end))
 
