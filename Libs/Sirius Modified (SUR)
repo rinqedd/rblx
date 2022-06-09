@@ -245,6 +245,12 @@ function EspLibrary.Unload()
     for _, object in next, EspLibrary.drawings do
         object:Remove()
     end
+    
+    for _, boxhandle in pairs(workspace.Living:GetDescendants() do
+        if v.Name == "BoxHandleAdornment" then
+            v:Destroy()
+        end
+    end
 
     runService:UnbindFromRenderStep("esp_rendering")
 end
