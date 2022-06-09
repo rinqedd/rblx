@@ -375,7 +375,7 @@ function EspLibrary.Init()
                 objects.side.Size = EspLibrary.options.fontSize
                 objects.side.Transparency = EspLibrary.options.healthTextTransparency
                 objects.side.Color = color or EspLibrary.options.healthTextColor
-                objects.side.Text = math.floor(health)
+                objects.side.Text = tostring(math.floor(health))
                 objects.side.Position = round(position + vector2New(size.X + 3, -3))
 
                 objects.bottom.Visible = canShow and EspLibrary.options.distance
