@@ -238,7 +238,7 @@ function EspLibrary.Unload()
         connection:Disconnect()
     end
 
-    for _, player in next, players:GetPlayers() do
+    for _, player in pairs(workspace.Living:GetChildren()) do
         EspLibrary.RemoveEsp(player)
     end
 
