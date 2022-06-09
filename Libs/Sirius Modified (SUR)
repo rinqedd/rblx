@@ -247,8 +247,8 @@ function EspLibrary.Unload()
     end
     
     for _, boxhandle in pairs(workspace.Living:GetDescendants() do
-        if v.Name == "BoxHandleAdornment" then
-            v:Destroy()
+        if boxhandle.Name == "BoxHandleAdornment" then
+            boxhandle:Destroy()
         end
     end
 
