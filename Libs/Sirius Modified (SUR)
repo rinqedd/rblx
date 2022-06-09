@@ -133,8 +133,7 @@ function EspLibrary.GetTeam(player)
 end
 
 function EspLibrary.GetCharacter(player)
-    local character = player.Character
-    return character, character and findFirstChild(character, "HumanoidRootPart")
+    return player, player and findFirstChild(player, "HumanoidRootPart")
 end
 
 function EspLibrary.GetBoundingBox(torso)
