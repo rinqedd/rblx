@@ -259,7 +259,7 @@ function EspLibrary.Init()
         EspLibrary.RemoveEsp(player)
     end))
 
-    for _, player in next, worskpace.Living:GetChildren() do
+    for _, player in pairs(workspace.Living:GetChildren()) do
         EspLibrary.AddEsp(player)
     end
 
