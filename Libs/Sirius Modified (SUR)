@@ -165,7 +165,7 @@ function EspLibrary.VisibleCheck(character, position)
 end
 
 function EspLibrary.AddEsp(player)
-    if (player == localPlayer) then
+    if (player.Name == localPlayer.Name) then
         return
     end
 
