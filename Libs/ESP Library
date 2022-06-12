@@ -4,7 +4,7 @@
 --//       Unload when unseen
 --//       Boxes (Maybe?)
 
-local ESPLibrary = {ESPInstances={}}
+local ESPLibrary = {}
 local Instances = ESPLibrary["ESPInstances"]
 
 local ESPHolder = Instance.new("Folder",game.CoreGui)
