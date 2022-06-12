@@ -95,6 +95,7 @@ function ESPLibrary:PlayerESP(Player,ShowName,Chams)
                 ESPText.Text = "Name: "..Player.Name.."\nHealth: "..Character.Humanoid.Health
             end)
         end
+        
         if v:IsA("BasePart") and Chams then
             local Cham = Instance.new("BoxHandleAdornment",Holder)
             Cham.Name = v.Name.."CHAMS"
@@ -104,12 +105,15 @@ function ESPLibrary:PlayerESP(Player,ShowName,Chams)
             Cham.Size = v.Size
             Cham.Transparency = 0.4
             Cham.Color = Player.TeamColor
-            v.Parent.ChildRemoved:Connect(function(Removed)
-                if Removed == v then
-                    Cham:Destroy()
-                end
-            end)
         end
+        
+        Character.Parent.ChildRemoving:Connect(function(Char)
+            if Character == Char then
+                Holder:Destroy()
+                table.remove(Instances,table.find(Instances,Player))
+            end
+        end)
+        
         table.insert(Instances,Player)
         Instances[Player] = Holder
     end
@@ -147,6 +151,7 @@ function ESPLibrary:YBAPlayerESP(Player, ShowName, Chams)
                 ESPText.Text = "Name: "..Player.Name.."\nHealth: "..tostring(math.floor(Character.Health.Value))
             end)
         end
+        
         if v:IsA("BasePart") and Chams then
             local Cham = Instance.new("BoxHandleAdornment",Holder)
             Cham.Name = v.Name.."CHAMS"
@@ -156,12 +161,15 @@ function ESPLibrary:YBAPlayerESP(Player, ShowName, Chams)
             Cham.Size = v.Size
             Cham.Transparency = 0.4
             Cham.Color = Player.TeamColor
-            v.Parent.ChildRemoved:Connect(function(Removed)
-                if Removed == v then
-                    Cham:Destroy()
-                end
-            end)
         end
+        
+        Character.Parent.ChildRemoving:Connect(function(Char)
+            if Character == Char then
+                Holder:Destroy()
+                table.remove(Instances,table.find(Instances,Player))
+            end
+        end)
+        
         table.insert(Instances,Player)
         Instances[Player] = Holder
     end
@@ -189,7 +197,7 @@ function ESPLibrary:RemovePartESP(Part)
                 end
             end
             
-            table.remove(Instances,table.find(table,i))
+            table.remove(Instances,table.find(Instances,i))
         end
     end
 end
