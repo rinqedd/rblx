@@ -6,13 +6,15 @@
 
 --// rinq#9949
 
+local Player = game.Players.LocalPlayer
+
 local ESPLibrary = {ESPInstances = {}}
 local Instances = ESPLibrary["ESPInstances"]
 
 local ESPHolder = Instance.new("Folder",game.CoreGui)
 ESPHolder.Name = "ESPHolder"
 
-function ESPLibrary:PartESP(Part,Text,Chams,Bool)
+function ESPLibrary:PartESP(Part,Text,Chams,Studs)
     local Holder = Instance.new("Folder",ESPHolder)
     Holder.Name = (Part.Name.."Holder")
     
@@ -26,8 +28,14 @@ function ESPLibrary:PartESP(Part,Text,Chams,Bool)
         local ESPText = Instance.new("TextLabel",BillboardGui)
         ESPText.Size = UDim2.new(0, 100, 0, 100)
         ESPText.BorderSizePixel = 0
-        ESPText.TextSize = 15
+        ESPText.TextSize = 10
         ESPText.Text = Text
+        if Studs then
+            ESPText.Text = Text.."\nDistance: "..tostring(math.floor(Player.Character.HumanoidRootPart.Position-Part.Position).magnitude))
+            Player.Character.HumanoidRootPart:GetPropertyChangedSignal("Position"):Connect(pcall(function()
+                SPText.Text = Text.."\nDistance: "..tostring(math.floor(Player.Character.HumanoidRootPart.Position-Part.Position).magnitude))
+            end))
+        end
         ESPText.BackgroundTransparency = 1
         ESPText.TextColor3 = Color3.new(1,1,1)
         ESPText.TextStrokeColor3 = Color3.fromRGB(6, 6, 6)
