@@ -86,7 +86,7 @@ function ESPLibrary:PlayerESP(Player,ShowName)
             ESPText.Size = UDim2.new(1,0,1,1)
             ESPText.BorderSizePixel = 0
             ESPText.TextSize = 13
-            ESPText.Text = ("Name:",Player.Name)
+            ESPText.Text = "Name: "..Player.Name
             ESPText.BackgroundTransparency = 1
             ESPText.TextColor3 = Color3.new(1,1,1)
             ESPText.TextStrokeColor3 = Color3.fromRGB(6, 6, 6)
