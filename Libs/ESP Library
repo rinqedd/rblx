@@ -27,15 +27,15 @@ function ESPLibrary:PartESP(Part,Text,Chams,Bool)
         TextHolder.BackgroundTransparency = 1
         TextHolder.BorderSizePixel = 0
         TextHolder.BackgroundColor3 = Color3.fromRGB(0,0,255)
-        local EspText = Instance.new('TextLabel',TextHolder)
-        EspText.Size = UDim2.new(1,0,1,1)
-        EspText.BorderSizePixel = 0
-        EspText.TextSize = 15
-        EspText.Text = Text
-        EspText.BackgroundTransparency = 1
-        EspText.TextColor3 = Color3.new(1,1,1)
-        EspText.TextStrokeColor3 = Color3.fromRGB(6, 6, 6)
-        EspText.TextStrokeTransparency = 0.7
+        local ESPText = Instance.new('TextLabel',TextHolder)
+        ESPText.Size = UDim2.new(1,0,1,1)
+        ESPText.BorderSizePixel = 0
+        ESPText.TextSize = 15
+        ESPText.Text = Text
+        ESPText.BackgroundTransparency = 1
+        ESPText.TextColor3 = Color3.new(1,1,1)
+        ESPText.TextStrokeColor3 = Color3.fromRGB(6, 6, 6)
+        ESPText.TextStrokeTransparency = 0.7
         Part.Parent.ChildRemoved:Connect(function(Removed)
             if Removed == Part then
                 BillboardGui:Destroy()
@@ -75,21 +75,22 @@ function ESPLibrary:PlayerESP(Player,ShowName)
             BillboardGui.Name = v.Name.."TEXT"
             BillboardGui.Adornee = v
             BillboardGui.Size = UDim2.new(2,0, 2,0)
+            BillboardGui.StudsOffset = Vector3.new(0, 1, 0)
             BillboardGui.AlwaysOnTop = true
             local TextHolder = Instance.new("Frame",BillboardGui)
             TextHolder.Size = UDim2.new(1,0, 1,0)
             TextHolder.BackgroundTransparency = 1
             TextHolder.BorderSizePixel = 0
             TextHolder.BackgroundColor3 = Color3.fromRGB(0,0,255)
-            local EspText = Instance.new('TextLabel',TextHolder)
-            EspText.Size = UDim2.new(1,0,1,1)
-            EspText.BorderSizePixel = 0
-            EspText.TextSize = 8
-            EspText.Text = Player.Name
-            EspText.BackgroundTransparency = 1
-            EspText.TextColor3 = Color3.new(1,1,1)
-            EspText.TextStrokeColor3 = Color3.fromRGB(6, 6, 6)
-            EspText.TextStrokeTransparency = 0.7
+            local ESPText = Instance.new("TextLabel",TextHolder)
+            ESPText.Size = UDim2.new(1,0,1,1)
+            ESPText.BorderSizePixel = 0
+            ESPText.TextSize = 13
+            ESPText.Text = ("Name:",Player.Name)
+            ESPText.BackgroundTransparency = 1
+            ESPText.TextColor3 = Color3.new(1,1,1)
+            ESPText.TextStrokeColor3 = Color3.fromRGB(6, 6, 6)
+            ESPText.TextStrokeTransparency = 0.7
         end
         if v:IsA("BasePart") then
             local Cham = Instance.new("BoxHandleAdornment",Holder)
@@ -99,7 +100,7 @@ function ESPLibrary:PlayerESP(Player,ShowName)
             Cham.ZIndex = 10
             Cham.Size = v.Size
             Cham.Transparency = 0.4
-            Cham.Color3 = Player.TeamColor
+            Cham.Color = Player.TeamColor
             v.Parent.ChildRemoved:Connect(function(Removed)
                 if Removed == v then
                     Cham:Destroy()
