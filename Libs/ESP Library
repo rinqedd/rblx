@@ -12,7 +12,7 @@ local Instances = ESPLibrary["ESPInstances"]
 local ESPHolder = Instance.new("Folder",game.CoreGui)
 ESPHolder.Name = "ESPHolder"
 
-function ESPLibrary:PartESP(Part,Text,Chams,Color)
+function ESPLibrary:PartESP(Part,Text,Chams)
     local Holder = Instance.new("Folder",ESPHolder)
     Holder.Name = (Part.Name.."Holder")
     if not Part then return end
@@ -52,7 +52,7 @@ function ESPLibrary:PartESP(Part,Text,Chams,Color)
     	Cham.ZIndex = 10
     	Cham.Size = Part.Size
     	Cham.Transparency = 0.3
-    	Cham.Color3 = Color
+    	Cham.Color3 = Part.Color
     	Part.Parent.ChildRemoved:Connect(function(Removed)
             if Removed == Part then
                 Cham:Destroy()
