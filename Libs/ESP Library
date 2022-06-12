@@ -61,7 +61,7 @@ function ESPLibrary:PartESP(Part,Text,Chams)
     Instances[Part] = Holder
 end
 
-function EspLibrary:RemovePartESP(Part)
+function ESPLibrary:RemovePartESP(Part)
     for i,v in pairs(Instances) do
         if (i == Part) and string.find(v.Name,"Holder") then
             for _,c in pairs(ESPHolder:GetChildren()) do
