@@ -63,7 +63,7 @@ function ESPLibrary:PartESP(Part,Text,Chams,Bool)
     Instances[Part] = Holder
 end
 
-function ESPLibrary:PlayerESP(Player,ShowName)
+function ESPLibrary:PlayerESP(Player,ShowName,Chams)
     local Character = Player.Character
 
     local Holder = Instance.new("Folder",ESPHolder)
@@ -92,7 +92,7 @@ function ESPLibrary:PlayerESP(Player,ShowName)
             ESPText.TextStrokeColor3 = Color3.fromRGB(6, 6, 6)
             ESPText.TextStrokeTransparency = 0.7
         end
-        if v:IsA("BasePart") then
+        if v:IsA("BasePart") and Chams then
             local Cham = Instance.new("BoxHandleAdornment",Holder)
             Cham.Name = v.Name.."CHAMS"
             Cham.Adornee = v
