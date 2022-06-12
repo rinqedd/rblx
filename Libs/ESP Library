@@ -75,7 +75,7 @@ function ESPLibrary:PlayerESP(Player,ShowName,Chams)
             BillboardGui.Name = v.Name.."TEXT"
             BillboardGui.Adornee = v
             BillboardGui.Size = UDim2.new(2,0, 2,0)
-            BillboardGui.StudsOffset = Vector3.new(0, 1, 0)
+            BillboardGui.StudsOffset = Vector3.new(0, 2, 0)
             BillboardGui.AlwaysOnTop = true
             local TextHolder = Instance.new("Frame",BillboardGui)
             TextHolder.Size = UDim2.new(1,0, 1,0)
@@ -86,11 +86,14 @@ function ESPLibrary:PlayerESP(Player,ShowName,Chams)
             ESPText.Size = UDim2.new(1,0,1,1)
             ESPText.BorderSizePixel = 0
             ESPText.TextSize = 13
-            ESPText.Text = "Name: "..Player.Name
+            ESPText.Text = "Name: "..Player.Name.."\nHealth: "..Character.Humanoid.Health
             ESPText.BackgroundTransparency = 1
             ESPText.TextColor3 = Color3.new(1,1,1)
             ESPText.TextStrokeColor3 = Color3.fromRGB(6, 6, 6)
             ESPText.TextStrokeTransparency = 0.7
+            Character.Humanoid:GetAttributeChangedSignal("Health"):Connect(function()
+                ESPText.Text = "Name: "..Player.Name.."\nHealth: "..Character.Humanoid.Health
+            end)
         end
         if v:IsA("BasePart") and Chams then
             local Cham = Instance.new("BoxHandleAdornment",Holder)
