@@ -42,11 +42,6 @@ function ESPLibrary:PartESP(Part,Text,Chams,Studs)
         ESPText.TextColor3 = Color3.new(1,1,1)
         ESPText.TextStrokeColor3 = Color3.fromRGB(6, 6, 6)
         ESPText.TextStrokeTransparency = 0.7
-        Part.Parent.ChildRemoved:Connect(function(Removed)
-            if Removed == Part then
-                BillboardGui:Destroy()
-            end
-    	end)
     end
     
     if Chams then
@@ -58,12 +53,14 @@ function ESPLibrary:PartESP(Part,Text,Chams,Studs)
     	Cham.Size = Part.Size
     	Cham.Transparency = 0.4
     	Cham.Color3 = Part.Color
-    	Part.Parent.ChildRemoved:Connect(function(Removed)
-            if Removed == Part then
-                Cham:Destroy()
-            end
-    	end)
     end
+    
+    Part.Parent.ChildRemoved:Connect(function(Removed)
+        if Part == Removed then
+            Holder:Destroy()
+            table.remove(Instances,table.find(Instances,Part))
+        end
+    end)
     
     table.insert(Instances,Part)
     Instances[Part] = Holder
