@@ -115,7 +115,7 @@ function ESPLibrary:PlayerESP(Player,ShowName,Chams)
     end
 end
 
-function Library:YBAPlayerESP(Player, ShowName, Chams)
+function ESPLibrary:YBAPlayerESP(Player, ShowName, Chams)
     local Character = Player.Character
 
     local Holder = Instance.new("Folder",ESPHolder)
