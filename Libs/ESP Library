@@ -4,7 +4,7 @@
 --//       Unload when unseen
 --//       Boxes (Maybe?)
 
-local ESPLibrary = {}
+local ESPLibrary = {ESPInstances = {}}
 local Instances = ESPLibrary["ESPInstances"]
 
 local ESPHolder = Instance.new("Folder",game.CoreGui)
@@ -17,7 +17,7 @@ function ESPLibrary:PartESP(Part,Text,Chams)
     if not Text then Text = "" end
     if not Chams then Chams = false end
     if Text ~= "" then
-        local BillboardGui = Instance.new("BillboardGui",ESPHolder)
+        local BillboardGui = Instance.new("BillboardGui",Holder)
         BillboardGui.Name = Part.Name.."TEXT"
         BillboardGui.Adornee = Part
         BillboardGui.Size = UDim2.new(5,0, 5,0)
@@ -43,7 +43,7 @@ function ESPLibrary:PartESP(Part,Text,Chams)
     	end)
     end
     if Chams then
-        local Cham = Instance.new("BoxHandleAdornment",ESPHolder)
+        local Cham = Instance.new("BoxHandleAdornment",Holder)
     	Cham.Name = Part.Name.."CHAMS"
     	Cham.Adornee = Part
     	Cham.AlwaysOnTop = true
@@ -57,7 +57,7 @@ function ESPLibrary:PartESP(Part,Text,Chams)
             end
     	end)
     end
-    Instances[Part]
+    table.insert(Instances,Part)
     Instances[Part] = Holder
 end
 
@@ -70,7 +70,7 @@ function ESPLibrary:RemovePartESP(Part)
                     break
                 end
             end
-            table.remove(Instances,i)
+            table.remove(Instances,table.find(table,i))
         end
     end
 end
