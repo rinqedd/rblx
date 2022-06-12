@@ -111,7 +111,7 @@ function ESPLibrary:PlayerESP(Player,ShowName)
     end
 end
 
-fuction ESPLibrary:RemovePlayerESP(Player)
+function ESPLibrary:RemovePlayerESP(Player)
     for i,v in pairs(Instances) do
         if i == Player and string.find(v.Name,"Holder") then
             for _,c in pairs(ESPHolder:GetChildren()) do
