@@ -1,0 +1,59 @@
+--// Work in progress. There is more to come.
+
+--// TODO: Listener
+--//       Unload when unseen
+--//       Boxes (Maybe?)
+
+local ESPLibrary = {}
+
+local ESPHolder = Instance.new("Folder",game.CoreGui)
+ESPHolder.Name = "ESPHolder"
+
+function ESPLibrary:PartESP(Part,Text,Chams)
+    if not Part then return end
+    if not Text then Text = "" end
+    if not Chams then Chams = false end
+    if Text ~= "" then
+        local BillboardGui = Instance.new("BillboardGui",ESPHolder)
+        BillboardGui.Name = "ESP"
+        BillboardGui.Adornee = Part
+        BillboardGui.Size = UDim2.new(5,0, 5,0)
+        BillboardGui.AlwaysOnTop = true
+        local TextHolder = Instance.new("Frame",BillboardGui)
+        TextHolder.Size = UDim2.new(1,0, 1,0)
+        TextHolder.BackgroundTransparency = 1
+        TextHolder.BorderSizePixel = 0
+        TextHolder.BackgroundColor3 = Color3.fromRGB(0,0,255)
+        local EspText = Instance.new('TextLabel',TextHolder)
+        EspText.Size = UDim2.new(1,0,1,1)
+        EspText.BorderSizePixel = 0
+        EspText.TextSize = 15
+        EspText.Text = Text
+        EspText.BackgroundTransparency = 1
+        EspText.TextColor3 = Color3.new(1,1,1)
+        EspText.TextStrokeColor3 = Color3.fromRGB(6, 6, 6)
+        EspText.TextStrokeTransparency = 0.7
+        Part.Parent.ChildRemoved:Connect(function(Removed)
+            if Removed == Part then
+                BillboardGui:Destroy()
+            end
+    	end)
+    end
+    if Chams then
+        local Cham = Instance.new("BoxHandleAdornment",ESPHolder)
+    	Cham.Name = Part.Name.."ESP"
+    	Cham.Adornee = Part
+    	Cham.AlwaysOnTop = true
+    	Cham.ZIndex = 10
+    	Cham.Size = Part.Size
+    	Cham.Transparency = 0.7
+    	Cham.Color3 = Part.Color
+    	Part.Parent.ChildRemoved:Connect(function(Removed)
+            if Removed == Part then
+                Cham:Destroy()
+            end
+    	end)
+    end
+end
+
+return ESPLibrary
