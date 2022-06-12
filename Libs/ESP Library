@@ -115,6 +115,58 @@ function ESPLibrary:PlayerESP(Player,ShowName,Chams)
     end
 end
 
+function Library:YBAPlayerESP(Player, ShowName, Chams)
+    local Character = Player.Character
+
+    local Holder = Instance.new("Folder",ESPHolder)
+    Holder.Name = Player.Name.."Holder"
+    
+    for i,v in pairs(Character:GetChildren()) do
+        if v:IsA("BasePart") and v.Name == "Head" and ShowName then
+            local BillboardGui = Instance.new("BillboardGui",Holder)
+            BillboardGui.Name = v.Name.."TEXT"
+            BillboardGui.Adornee = v
+            BillboardGui.Size = UDim2.new(2,0, 2,0)
+            BillboardGui.StudsOffset = Vector3.new(0, 2, 0)
+            BillboardGui.AlwaysOnTop = true
+            local TextHolder = Instance.new("Frame",BillboardGui)
+            TextHolder.Size = UDim2.new(1,0, 1,0)
+            TextHolder.BackgroundTransparency = 1
+            TextHolder.BorderSizePixel = 0
+            TextHolder.BackgroundColor3 = Color3.fromRGB(0,0,255)
+            local ESPText = Instance.new("TextLabel",TextHolder)
+            ESPText.Size = UDim2.new(1,0,1,1)
+            ESPText.BorderSizePixel = 0
+            ESPText.TextSize = 13
+            ESPText.Text = "Name: "..Player.Name.."\nHealth: "..tostring(math.floor(Character.Health.Value))
+            ESPText.BackgroundTransparency = 1
+            ESPText.TextColor3 = Color3.new(1,1,1)
+            ESPText.TextStrokeColor3 = Color3.fromRGB(6, 6, 6)
+            ESPText.TextStrokeTransparency = 0.7
+            Character.Health:GetPropertyChangedSignal("Value"):Connect(function()
+                ESPText.Text = "Name: "..Player.Name.."\nHealth: "..tostring(math.floor(Character.Health.Value))
+            end)
+        end
+        if v:IsA("BasePart") and Chams then
+            local Cham = Instance.new("BoxHandleAdornment",Holder)
+            Cham.Name = v.Name.."CHAMS"
+            Cham.Adornee = v
+            Cham.AlwaysOnTop = true
+            Cham.ZIndex = 10
+            Cham.Size = v.Size
+            Cham.Transparency = 0.4
+            Cham.Color = Player.TeamColor
+            v.Parent.ChildRemoved:Connect(function(Removed)
+                if Removed == v then
+                    Cham:Destroy()
+                end
+            end)
+        end
+        table.insert(Instances,Player)
+        Instances[Player] = Holder
+    end
+end
+
 function ESPLibrary:RemovePlayerESP(Player)
     for i,v in pairs(Instances) do
         if i == Player and string.find(v.Name,"Holder") then
