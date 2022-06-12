@@ -51,7 +51,7 @@ function ESPLibrary:PartESP(Part,Text,Chams)
     	Cham.AlwaysOnTop = true
     	Cham.ZIndex = 10
     	Cham.Size = Part.Size
-    	Cham.Transparency = 0.3
+    	Cham.Transparency = 0.4
     	Cham.Color3 = Part.Color
     	Part.Parent.ChildRemoved:Connect(function(Removed)
             if Removed == Part then
