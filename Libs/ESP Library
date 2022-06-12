@@ -107,7 +107,7 @@ function ESPLibrary:PlayerESP(Player,ShowName,Chams)
             Cham.Color = Player.TeamColor
         end
         
-        Character.Parent.ChildRemoving:Connect(function(Char)
+        Character.Parent.ChildRemoved:Connect(function(Char)
             if Character == Char then
                 Holder:Destroy()
                 table.remove(Instances,table.find(Instances,Player))
@@ -163,7 +163,7 @@ function ESPLibrary:YBAPlayerESP(Player, ShowName, Chams)
             Cham.Color = Player.TeamColor
         end
         
-        Character.Parent.ChildRemoving:Connect(function(Char)
+        Character.Parent.ChildRemoved:Connect(function(Char)
             if Character == Char then
                 Holder:Destroy()
                 table.remove(Instances,table.find(Instances,Player))
