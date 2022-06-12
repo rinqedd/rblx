@@ -87,7 +87,7 @@ function ESPLibrary:PlayerESP(Player,ShowName,Chams)
             end)
         end
         
-        if v:IsA("BasePart") and Chams then
+        if v.Name ~= "HumanoidRootPart" and v:IsA("BasePart") and Chams then
             local Cham = Instance.new("BoxHandleAdornment",Holder)
             Cham.Name = v.Name.."CHAMS"
             Cham.Adornee = v
@@ -138,7 +138,7 @@ function ESPLibrary:YBAPlayerESP(Player, ShowName, Chams)
             end)
         end
         
-        if v:IsA("BasePart") and Chams then
+        if v.Name ~= "HumanoidRootPart" and v:IsA("BasePart") and Chams then
             local Cham = Instance.new("BoxHandleAdornment",Holder)
             Cham.Name = v.Name.."CHAMS"
             Cham.Adornee = v
