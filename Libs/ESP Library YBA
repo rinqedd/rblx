@@ -1,8 +1,6 @@
 --// Work In Progress - Unfinished
 
---// TODO: Listener
---//       Unload when unseen
---//       Boxes (Maybe?)
+--// This is a version of https://raw.githubusercontent.com/rinqedd/rblx/main/Libs/ESP%20Library with a modified PlayerESP that works with YBA.
 
 --// rinq#9949
 
@@ -14,7 +12,7 @@ local Instances = ESPLibrary["ESPInstances"]
 local ESPHolder = Instance.new("Folder",game.CoreGui)
 ESPHolder.Name = "ESPHolder"
 
-function ESPLibrary:YBAPlayerESP(Player, ShowName, Chams)
+function ESPLibrary:PlayerESP(Player, ShowName, Chams)
     local Character = Player.Character
 
     local Holder = Instance.new("Folder",ESPHolder)
