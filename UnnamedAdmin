@@ -1,0 +1,504 @@
+--// Instances:
+
+if game.CoreGui:FindFirstChild("UnnamedAdmin") then
+    game.CoreGui:FindFirstChild("UnnamedAdmin"):Destroy()
+end
+
+local ScreenGui = Instance.new("ScreenGui")
+local CommandBar = Instance.new("Frame")
+local CommandBarRound = Instance.new("UICorner")
+local CommandText = Instance.new("TextBox")
+local CommandTextRound = Instance.new("UICorner")
+
+--// Properties:
+
+ScreenGui.Name = "UnnamedAdmin"
+ScreenGui.Parent = game.CoreGui
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+CommandBar.Name = "CommandBar"
+CommandBar.Parent = ScreenGui
+CommandBar.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+CommandBar.BackgroundTransparency = 0.6
+CommandBar.BorderSizePixel = 0
+CommandBar.Position = UDim2.new(0.310398757, 0, 0.468606472, 0)
+CommandBar.Size = UDim2.new(0.379202515, 0, 0.0612557419, 0)
+CommandBar.Visible = false
+
+CommandBarRound.CornerRadius = UDim.new(0, 100)
+CommandBarRound.Name = "CommandBarRound"
+CommandBarRound.Parent = CommandBar
+
+CommandText.Name = "CommandText"
+CommandText.Parent = CommandBar
+CommandText.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+CommandText.BackgroundTransparency = 0.600
+CommandText.Position = UDim2.new(0.0144031672, 0, 0.15, 0)
+CommandText.Size = UDim2.new(0.973195791, 0, 0.7, 0)
+CommandText.Font = Enum.Font.Code
+CommandText.PlaceholderText = "Press ; to focus command bar"
+CommandText.Text = ""
+CommandText.TextColor3 = Color3.fromRGB(255, 255, 255)
+CommandText.TextSize = 14.000
+CommandText.TextWrapped = true
+
+CommandTextRound.CornerRadius = UDim.new(0, 100)
+CommandTextRound.Name = "CommandTextRound"
+CommandTextRound.Parent = CommandText
+
+--// ESP Library:
+
+local ESPLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/rinqedd/rblx/main/Libs/ESP%20Library"))()
+
+--// Variables:
+
+local Players = game.Players
+local LPlayer = game.Players.LocalPlayer
+LCharacter = LPlayer.Character or LPlayer.CharacterAdded:Wait()
+LPlayer.CharacterAdded:Connect(function(NewCharacter)
+	wait()
+	LCharacter = NewCharacter
+end)
+local Mouse = LPlayer:GetMouse()
+
+local queue_teleport = syn and syn.queue_on_teleport or queue_on_teleport or fluxus and fluxus.queue_on_teleport
+
+LPlayer.OnTeleport:Connect(function(State)
+    if State == Enum.TeleportState.Started then
+        if queue_teleport then
+            queue_teleport("")
+        end
+    end
+end)
+
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--// ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+--\\ ADD LOADSTRING WHEN YOU FINISH AND PUT IT INTO GITHUB
+
+local CmdBar = CommandBar
+local CmdText = CommandText
+
+local Prefix = ";"
+local Commands = {}
+
+--// Functions:
+
+function RandStr()
+	local Length = math.random(10,20)
+	local Array = {}
+	for i = 1, Length do
+		Array[i] = string.char(math.random(32, 126))
+	end
+	return table.concat(Array)
+end
+
+function Notify(Header,Desc)
+    game:GetService("StarterGui"):SetCore("SendNotification",{
+    	Title = Header,
+    	Text = Desc
+    })
+end
+
+function CheckR15(Player)
+    if Player.Character.Humanoid.RigType == Enum.HumanoidRigType.R15 then
+        return true
+    end
+end
+
+function GetRoot(Character)
+	local Root
+	if Character then
+		Root = Character:FindFirstChild("HumanoidRootPart") or Character:FindFirstChild("Torso")
+	end
+
+	return Root
+end
+
+function GetPlrFromName(Name)
+    local IsName
+    Name = Name:lower()
+    
+	for i,v in pairs(Players:GetPlayers()) do
+		if v.Name:lower():match("^"..Name) then
+			IsName = v.Name
+			break
+		end
+	end
+
+	return IsName
+end
+
+function AddCmd(Name,Function)
+    if type(Name) == "string" then
+        Name = {Name}
+    end
+    for _,Cmd in pairs(Name) do
+    	Commands[Cmd] = {
+    	    FUNC = Function
+    	}
+    end
+end
+
+function RunCmd(Cmd,Args)
+    Commands[Cmd]["FUNC"](unpack(Args))
+end
+
+CmdText.FocusLost:Connect(function()
+	local Split = string.split(CmdText.Text," ")
+	local Cmd = Split[1]:lower()
+	local Args = {}
+	for i,v in pairs(Split) do
+	    if i ~= 1 then
+	        table.insert(Args,v)
+	    end
+	end
+	if Commands[Cmd] then
+	    RunCmd(Cmd,Args)
+	end
+	CmdBar.Visible = false
+end)
+
+Mouse.KeyDown:Connect(function(Key)
+	if (Key==Prefix) then
+		CmdBar.Visible = true
+        CmdText:CaptureFocus()
+            spawn(function()
+			repeat CmdText.Text = '' until CmdText.Text == ''
+		end)
+	end
+end)
+
+getgenv().Flying = false
+getgenv().Gyro = nil
+getgenv().Vel = nil
+
+local ControlModule = require(LPlayer.PlayerScripts.PlayerModule):GetControls()
+local Camera = game.Workspace.CurrentCamera
+
+function Fly()
+    for _,Part in pairs(LCharacter:GetChildren()) do
+		if Part:IsA("BasePart") then
+			Part.CanCollide = true
+		end
+	end
+	
+	Gyro = Instance.new("BodyGyro")
+	Gyro.maxTorque = Vector3.new(10000, 10000, 10000)
+	Gyro.P = 10000
+	Vel = Instance.new("BodyVelocity")
+	Vel.maxForce = Vector3.new(10000, 10000, 10000)
+	Vel.P = 10000
+	Gyro.Name = RandStr()
+	Vel.Name = RandStr()
+	Gyro.Parent = GetRoot(LCharacter)
+	Vel.Parent = GetRoot(LCharacter)
+	Gyro.CFrame = GetRoot(LCharacter).CFrame
+	Vel.Velocity = Vector3.new()
+
+    local Movements = {
+    	Forward = 0,
+    	Backward = 0,
+    	Right = 0,
+    	Left = 0
+    }
+    
+    local FlyConn = game:GetService("RunService").RenderStepped:Connect(function()
+    	if Flying then
+    		if ControlModule:GetMoveVector().X >= 0.1 and ControlModule:GetMoveVector().X <= 1.9 then
+    			Movements.Right = 1
+    		else
+    			Movements.Right = 0
+    		end
+    		if ControlModule:GetMoveVector().Z >= 0.1 and ControlModule:GetMoveVector().Z <= 1.9 then
+    			Movements.Backward = 1
+    		else
+    			Movements.Backward = 0
+    		end
+    		if ControlModule:GetMoveVector().X <= -0.1 and ControlModule:GetMoveVector().X >= -1.9 then
+    			Movements.Left = 1
+    		else
+    			Movements.Left = 0
+    		end
+    		if ControlModule:GetMoveVector().Z <= -0.1 and ControlModule:GetMoveVector().Z >= -2.499 then
+    			Movements.Forward = 1
+    		else
+    			Movements.Forward = 0
+    		end
+    		local CameraCFrame = Camera.CFrame
+    		Gyro.CFrame = CameraCFrame
+    		local Dist = CameraCFrame.rightVector * (Movements.Right - Movements.Left) + CameraCFrame.lookVector * (Movements.Forward - Movements.Backward)
+    		if Dist:Dot(Dist) > 0 then
+    			Dist = Dist.unit
+    		end
+    		Vel.Velocity = Dist * 60
+    	end
+    end)
+    Vel.Parent.ChildRemoved:Connect(function(IsVel)
+        if IsVel == Vel then
+            FlyConn:Disconnect()
+            Flying = false
+        end
+    end)
+    Flying = true
+end
+
+function Unfly()
+    for _,Part in pairs(LCharacter:GetChildren()) do
+		if Part:IsA("BasePart") then
+			Part.CanCollide = false
+		end
+    end
+    if Gyro and Vel then
+        Gyro:Destroy()
+        Vel:Destroy()
+        Gyro = nil
+        Vel = nil
+    end
+end
+
+AddCmd({"fly","flight"},function()
+    Fly()
+end)
+
+AddCmd({"unfly","unflight"},function()
+    Unfly()
+end)
+
+AddCmd({"float","platform"},function()
+    
+end)
+
+AddCmd({"unfloat","unplatform"},function()
+    
+end)
+
+AddCmd("goto",function(Player)
+    local Target = Players[GetPlrFromName(Player)]
+    if Target then
+        Player = Target
+    end
+    pcall(function()
+	    GetRoot(LCharacter).CFrame = GetRoot(Player.Character).CFrame
+	end)
+end)
+
+AddCmd({"locate","playeresp","espplayer"},function(Player)
+    if Player == "all" then
+        for _,Plr in pairs(Players:GetPlayers()) do
+            ESPLib:PlayerESP(Plr,true,true)
+        end
+    else
+        local Plr = Players[GetPlrFromName[Player]]
+        ESPLib:PlayerESP(Plr,true,true)
+    end
+end)
+
+AddCmd({"unlocate","unplayeresp","unespplayer"},function(Player)
+    if Player == "all" then
+        for _,Plr in pairs(Players:GetPlayers()) do
+            ESPLib:RemovePlayerESP(Plr)
+        end
+    else
+        local Plr = Players[GetPlrFromName[Player]]
+        ESPLib:RemovePlayerESP(Plr)
+    end
+end)
+
+AddCmd({"discord","afterglow"},function()
+    local Request = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or getgenv().request or request
+	HTTPServ = game.HttpService
+	if Request then
+		Request({
+			Url = 'http://127.0.0.1:6463/rpc?v=1',
+			Method = 'POST',
+			Headers = {
+				['Content-Type'] = 'application/json',
+				Origin = 'https://discord.com'
+			},
+			Body = HTTPServ:JSONEncode({
+				cmd = 'INVITE_BROWSER',
+				nonce = HTTPServ:GenerateGUID(false),
+				args = {code = 'FaDKXB6BTZ'}
+			})
+		})
+	end
+end)
+
+AddCmd({"rejoin","rj"},function()
+    if #Players:GetPlayers() <= 1 then
+        game.TeleportService:Teleport(game.PlaceId,LPlayer)
+    else
+        game.TeleportService:TeleportToPlaceInstance(game.PlaceId,game.JobId,LPlayer)
+    end
+end)
+
+AddCmd({"nolimbs","removelimbs","deletelimbs"},function()
+    if CheckR15(LPlayer) then
+        for _,Limb in pairs(LCharacter:GetChildren()) do
+            if Limb:IsA("BasePart") and (Limb.Name == "RightUpperLeg" or Limb.Name == "LeftUpperLeg" or Limb.Name == "RightUpperArm" or Limb.Name == "LeftUpperArm") then
+                Limb:Destroy()
+            end
+        end
+    else
+        for _,Limb in pairs(LCharacter:GetChildren()) do
+            if Limb:IsA("BasePart") and (Limb.Name == "Right Leg" or Limb.Name == "Left Leg" or Limb.Name == "Right Arm" or Limb.Name == "Left Arm") then
+                Limb:Destroy()
+            end 
+        end
+    end
+end)
+
+AddCmd("drophats",function()
+    for _,Hat in pairs(LCharacter.Humanoid:GetAccessories()) do
+        Hat.Handle.CanCollide = true
+        Hat.Handle.AccessoryWeld:Destroy()
+    end
+end)
+
+AddCmd({"nohats","removehats","deletehats"},function()
+    for _,Hat in pairs(LCharacter:GetDescendants()) do
+        if Hat:IsA("Accessory") then
+            for _,Weld in pairs(Hat:GetDescendants()) do
+                if Weld:IsA("Weld") then
+                    Weld:Destroy()
+                end
+            end
+        end
+    end
+end)
+
+AddCmd({"droptools"},function()
+    for _,Tool in pairs(LPlayer.Backpack:GetChildren()) do
+        if Tool:IsA("Tool") then
+            Tool.Parent = LCharacter
+        end
+    end
+    wait()
+    for _,Tool in pairs(LCharacter:GetChildren()) do
+        if Tool:IsA("Tool") then
+            v.Parent = workspace
+        end
+    end
+end)
+
+AddCmd({"chatlogs","clogs"},function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/rinqedd/rblx/main/Chatlogs"))()
+    Notify("Chatlogs","Credit to V3rtices on V3rmillion.")
+end)
+
+AddCmd({"walkspeed","speed","ws"},function(Speed)
+    LCharacter.Humanoid.WalkSpeed = Speed
+end)
+
+AddCmd({"jumppower","jp"},function(Jump)
+    LCharacter.Humanoid.JumpPower = Jump
+end)
+
+AddCmd({"sit"},function()
+    LCharacter.Humanoid.Sit = true
+end)
+
+AddCmd({"tpposition","tppos","gotopos","tptopos"},function(Position)
+    local Split = string.split(Position,",")
+    if #Split == 3 then
+        GetRoot(LCharacter).CFrame = CFrame.new(unpack(Split))
+    end
+end)
+
+AddCmd({"tweenposition","tweenpos","tweenpos","tweentopos"},function(Position,Speed)
+    local Split = string.split(Position,",")
+    if #Split == 3 then
+        local OldPosition = LCharacter.HumanoidRootPart.Position
+        local NewPosition = Vector3.new(unpack(Split))
+        local Time = (OldPosition-NewPosition).magnitude/Speed
+        local TweenInfo = TweenInfo.new(
+        	Time,
+        	Enum.EasingStyle.Linear,
+        	Enum.EasingDirection.Out, 
+        	0,
+        	false,
+        	0
+        )
+        local Tween = game.TweenService:Create(LCharacter.HumanoidRootPart,TweenInfo,{CFrame = CFrame.new(NewPosition)})
+        Tween:Play()
+    end
+end)
+
+AddCmd({"spectate","view","watch"},function(Player)
+    local Target = Players[GetPlrFromName(Player)]
+    local Continue = true
+    if Target then
+        Player = Target
+    end
+    workspace.CurrentCamera.CameraSubject = Player.Character
+    Notify("Spectate","Viewing "..Player.Name)
+    Player.Character.Humanoid:GetPropertyChangedSignal("Health"):Connect(function()
+        if Player.Character.Humanoid.Health == 0 then
+            if Continue then
+                Continue = false
+                workspace.CurrentCamera.CameraSubject = LCharacter
+            end
+        end
+    end)
+    Player.CharacterRemoving:Connect(function(_)
+        if Continue then
+            workspace.CurrentCamera.CameraSubject = LCharacter
+            Continue = false
+        end
+    end)
+end)
+
+AddCmd({"unspectate","unview","unwatch"},function()
+    workspace.CurrentCamera.CameraSubject = LCharacter
+end)
+
+AddCmd({"prefix","changeprefix"},function()
+    CommandText.PlaceholderText = "Press "..Prefix.." to focus command bar"
+end)
+
+Notify("Loaded!","Press Semi-Colon ( ; ) to load the gui.")
