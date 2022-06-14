@@ -185,11 +185,20 @@ function AddCmd(Name,Example,Function)
     if type(Name) == "string" then
         Name = {Name}
     end
-    for _,Cmd in pairs(Name) do
-    	Commands[Cmd] = {
-	        EXAMPLE = Example,
-    	    FUNC = Function
-    	}
+    for i,Cmd in pairs(Name) do
+        if i == 1 then
+        	Commands[Cmd] = {
+    	        EXAMPLE = Example,
+        	    FUNC = Function,
+        	    ALIAS = false
+        	}
+        else
+            Commands[Cmd] = {
+    	        EXAMPLE = Example,
+        	    FUNC = Function,
+        	    ALIAS = true
+        	}
+        end
     end
 end
 
@@ -206,11 +215,11 @@ CmdText.FocusLost:Connect(function()
 	        table.insert(Args,v)
 	    end
 	end
+	CmdBar.Visible = false
+	CommandList.Visible = false
 	if Commands[Cmd] then
 	    RunCmd(Cmd,Args)
 	end
-	CmdBar.Visible = false
-	CommandList.Visible = false
 end)
 
 Mouse.KeyDown:Connect(function(Key)
@@ -320,12 +329,72 @@ AddCmd({"unfly"},"",function()
     Unfly()
 end)
 
-AddCmd({"float"},"",function()
-    
+getgenv().Float = false
+getgenv().FloatPart = nil
+
+AddCmd({"float","platform"},"",function()
+    if Float then return Notify("Float","You already have float enabled.") end
+    FloatPart = Instance.new("Part",LCharacter)
+    FloatPart.Name = RandStr()
+    FloatPart.Parent = LCharacter
+    FloatPart.Transparency = 0
+    FloatPart.Size = Vector3.new(5,1,5)
+    FloatPart.Anchored = true
+    getgenv().FloatValue = -3.5
+    if CheckR15(LPlayer) then
+        FloatValue = -3.65
+    end
+    getgenv().Up = false
+    getgenv().Down = false
+    FloatDown = Mouse.KeyDown:Connect(function(Key)
+        if Key == "e" then
+            Up = true
+            spawn(function()
+                repeat task.wait()
+                    pcall(function()
+                        FloatPart.CFrame = FloatPart.CFrame * CFrame.new(0,0.5,0) 
+                    end)
+                until not Up
+            end)
+        elseif Key == "q" then
+            Down = true
+            spawn(function()
+                repeat task.wait()
+                    pcall(function()
+                        FloatPart.CFrame = FloatPart.CFrame * CFrame.new(0,-0.5,0)
+                    end)
+                until not Down
+            end)
+        end
+    end)
+    FloatUp = Mouse.KeyUp:Connect(function(Key)
+        if Key == "e" then
+            Up = false
+        elseif Key == "q" then
+            Down = false
+        end
+    end)
+    Float = true
+    repeat task.wait() 
+        pcall(function()
+            if Float then
+                FloatPart.CFrame = GetRoot(LCharacter).CFrame * CFrame.new(0,FloatValue,0) 
+            end
+        end)
+    until not Float or LCharacter.Humanoid.Health == 0
+    print("end")
+    Float = false
+    if FloatPart then
+        FloatUp:Disconnect()
+        FloatDown:Disconnect()
+        FloatPart:Destroy()
+    end
 end)
 
-AddCmd({"unfloat"},"",function()
-    
+AddCmd({"unfloat","unplatform"},"",function()
+    Float = false
+    FloatPart:Destroy()
+    FloatPart = nil
 end)
 
 AddCmd("goto","[username] (e.g exampleUser123)",function(Player)
@@ -338,18 +407,18 @@ AddCmd("goto","[username] (e.g exampleUser123)",function(Player)
 	end)
 end)
 
-AddCmd({"locate"},"[username or 'all']",function(Player)
+AddCmd({"locate","playeresp","espplayer"},"[username or 'all']",function(Player)
     if Player == "all" then
         for _,Plr in pairs(Players:GetPlayers()) do
             ESPLib:PlayerESP(Plr,true,true)
         end
     else
         local Plr = Players[GetPlrFromName[Player]]
-        ESPLib:PlayerESP(Plr,true,true)
+        ESPLib:PlayerESP(Plr.Name,true,true)
     end
 end)
 
-AddCmd({"unlocate"},"[username or 'all']",function(Player)
+AddCmd({"unlocate","playeresp","espplayer"},"[username or 'all']",function(Player)
     if Player == "all" then
         for _,Plr in pairs(Players:GetPlayers()) do
             ESPLib:RemovePlayerESP(Plr)
@@ -360,7 +429,23 @@ AddCmd({"unlocate"},"[username or 'all']",function(Player)
     end
 end)
 
-AddCmd({"discord"},"",function()
+AddCmd("noclip","",function()
+    for _,Part in pairs(LCharacter:GetChildren()) do
+        if Part:IsA("BasePart") then
+            Part.CanCollide = false
+        end
+    end
+end)
+
+AddCmd({"unnoclip","clip"},"",function()
+    for _,Part in pairs(LCharacter:GetChildren()) do
+        if Part:IsA("BasePart") then
+            Part.CanCollide = true
+        end
+    end
+end)
+
+AddCmd({"discord","afterglow"},"",function()
     local Request = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or getgenv().request or request
 	HTTPServ = game.HttpService
 	if Request then
@@ -380,7 +465,7 @@ AddCmd({"discord"},"",function()
 	end
 end)
 
-AddCmd({"rejoin"},"",function()
+AddCmd({"rejoin","rj"},"",function()
     if #Players:GetPlayers() <= 1 then
         game.TeleportService:Teleport(game.PlaceId,LPlayer)
     else
@@ -388,7 +473,7 @@ AddCmd({"rejoin"},"",function()
     end
 end)
 
-AddCmd({"nolimbs"},"",function()
+AddCmd("nolimbs","",function()
     if CheckR15(LPlayer) then
         for _,Limb in pairs(LCharacter:GetChildren()) do
             if Limb:IsA("BasePart") and (Limb.Name == "RightUpperLeg" or Limb.Name == "LeftUpperLeg" or Limb.Name == "RightUpperArm" or Limb.Name == "LeftUpperArm") then
@@ -404,6 +489,58 @@ AddCmd({"nolimbs"},"",function()
     end
 end)
 
+AddCmd({"nolegs","deletelegs"},"",function()
+    if CheckR15(LPlayer) then
+        for _,Limb in pairs(LCharacter:GetChildren()) do
+            if Limb:IsA("BasePart") and (Limb.Name == "RightUpperLeg" or Limb.Name == "LeftUpperLeg") then
+                Limb:Destroy()
+            end
+        end
+    else
+        for _,Limb in pairs(LCharacter:GetChildren()) do
+            if Limb:IsA("BasePart") and (Limb.Name == "Right Leg" or Limb.Name == "Left Leg") then
+                Limb:Destroy()
+            end 
+        end
+    end
+end)
+
+AddCmd({"nobody","detachbody","dropbody"},"",function()
+    if CheckR15(LPlayer) then
+        LCharacter.LowerTorso.Root:Destroy()
+    else
+        GetRoot(LCharacter).RootJoint:Destroy()
+    end
+end)
+
+AddCmd({"noarms","deletearms"},"",function()
+    if CheckR15(LPlayer) then
+        for _,Limb in pairs(LCharacter:GetChildren()) do
+            if Limb:IsA("BasePart") and (Limb.Name == "RightUpperArm" or Limb.Name == "LeftUpperArm") then
+                Limb:Destroy()
+            end
+        end
+    else
+        for _,Limb in pairs(LCharacter:GetChildren()) do
+            if Limb:IsA("BasePart") and (Limb.Name == "Right Arm" or Limb.Name == "Left Arm") then
+                Limb:Destroy()
+            end 
+        end
+    end
+end)
+
+AddCmd("equiptools","",function()
+    for _,Tool in pairs(LPlayer.Backpack:GetChildren()) do
+        if Tool:IsA("Tool") then
+            Tool.Parent = LCharacter
+        end
+    end
+end)
+
+AddCmd("unequiptools","",function()
+    LCharacter.Humanoid:UnequipTools()
+end)
+
 AddCmd("drophats","",function()
     for _,Hat in pairs(LCharacter.Humanoid:GetAccessories()) do
         Hat.Handle.CanCollide = true
@@ -411,7 +548,7 @@ AddCmd("drophats","",function()
     end
 end)
 
-AddCmd({"nohats"},"",function()
+AddCmd({"nohats","removehats","deletehats"},"",function()
     for _,Hat in pairs(LCharacter:GetDescendants()) do
         if Hat:IsA("Accessory") then
             for _,Weld in pairs(Hat:GetDescendants()) do
@@ -423,7 +560,7 @@ AddCmd({"nohats"},"",function()
     end
 end)
 
-AddCmd({"droptools"},"",function()
+AddCmd("droptools","",function()
     for _,Tool in pairs(LPlayer.Backpack:GetChildren()) do
         if Tool:IsA("Tool") then
             Tool.Parent = LCharacter
@@ -437,34 +574,34 @@ AddCmd({"droptools"},"",function()
     end
 end)
 
-AddCmd({"chatlogs"},"",function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/rinqedd/rblx/main/Chatlogs"))()
+AddCmd({"chatlogs","clogs"},"",function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/rinqedd/rblx/main/random/Chatlogs"))()
     Notify("Chatlogs","Credit to V3rtices on V3rmillion.")
 end)
 
-AddCmd({"walkspeed"},"[number] (e.g 16)",function(Speed)
+AddCmd({"walkspeed","speed","ws"},"[number] (e.g 16)",function(Speed)
     LCharacter.Humanoid.WalkSpeed = Speed
 end)
 
-AddCmd({"jumppower"},"[number] (e.g 50)",function(Jump)
+AddCmd("jumppower","[number] (e.g 50)",function(Jump)
     LCharacter.Humanoid.JumpPower = Jump
 end)
 
-AddCmd({"sit"},"",function()
+AddCmd("sit","",function()
     LCharacter.Humanoid.Sit = true
 end)
 
-AddCmd({"tpposition"},"[position] (e.g 50,50,50)",function(Position)
+AddCmd({"tpposition","tppos"},"[position] (e.g 50,50,50)",function(Position)
     local Split = string.split(Position,",")
     if #Split == 3 then
         GetRoot(LCharacter).CFrame = CFrame.new(unpack(Split))
     end
 end)
 
-AddCmd({"tweenposition"},"[position] (e.g 50,50,50)",function(Position,Speed)
+AddCmd({"tweenposition","tweenpos","ttpos"},"[position] (e.g 50,50,50)",function(Position,Speed)
     local Split = string.split(Position,",")
     if #Split == 3 then
-        local OldPosition = LCharacter.HumanoidRootPart.Position
+        local OldPosition = GetRoot(LCharacter).Position
         local NewPosition = Vector3.new(unpack(Split))
         local Time = (OldPosition-NewPosition).magnitude/Speed
         local TweenInfo = TweenInfo.new(
@@ -475,12 +612,12 @@ AddCmd({"tweenposition"},"[position] (e.g 50,50,50)",function(Position,Speed)
         	false,
         	0
         )
-        local Tween = game.TweenService:Create(LCharacter.HumanoidRootPart,TweenInfo,{CFrame = CFrame.new(NewPosition)})
+        local Tween = game.TweenService:Create(GetRoot(LCharacter),TweenInfo,{CFrame = CFrame.new(NewPosition)})
         Tween:Play()
     end
 end)
 
-AddCmd({"view"},"[username] (e.g exampleUser123)",function(Player)
+AddCmd({"view","spectate","watch"},"[username] (e.g exampleUser123)",function(Player)
     local Target = Players[GetPlrFromName(Player)]
     local Continue = true
     if Target then
@@ -504,11 +641,36 @@ AddCmd({"view"},"[username] (e.g exampleUser123)",function(Player)
     end)
 end)
 
-AddCmd({"unview"},"",function()
+AddCmd({"unview","unspectate","unwatch"},"",function()
     workspace.CurrentCamera.CameraSubject = LCharacter
 end)
 
-AddCmd({"prefix"},"",function(NewPrefix)
+AddCmd({"xray"},"",function()
+    for _,v in pairs(workspace:GetDescendants()) do
+        if v:IsA("BasePart") and not v.Parent:FindFirstChild("Humanoid") and not v.Parent.Parent:FindFirstChild("Humanoid") then
+            v.Transparency = 0.5
+        end
+    end
+end)
+
+AddCmd({"noxray","unxray"},"",function()
+    for _,v in pairs(workspace:GetDescendants()) do
+        if v:IsA("BasePart") and not v.Parent:FindFirstChild("Humanoid") and not v.Parent.Parent:FindFirstChild("Humanoid") then
+            v.Transparency = 0
+        end
+    end
+end)
+
+AddCmd({"antiafk","antiidle"},"",function()
+    local VirtualUser = game:GetService("VirtualUser")
+    LPlayer.Idled:connect(function()
+        VirtualUser:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+        wait(1)
+        VirtualUser:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    end)
+end)
+
+AddCmd({"prefix","changeprefix"},"",function(NewPrefix)
     CommandText.PlaceholderText = "Press "..Prefix.." to focus command bar"
 end)
 
@@ -516,10 +678,12 @@ local CommandHolder = Instance.new("Folder",game.CoreGui)
 CommandHolder.Name = "CommandHolder"
 
 for Cmd,Table in pairs(Commands) do
-    local CmdExample = Command:Clone()
-    CmdExample.Parent = CommandListText
-    CmdExample.Name = Cmd
-    CmdExample.Text = CmdExample.Text..Cmd.." "..Table["EXAMPLE"]
+    if not Table["ALIAS"] then
+        local CmdExample = Command:Clone()
+        CmdExample.Parent = CommandListText
+        CmdExample.Name = Cmd
+        CmdExample.Text = CmdExample.Text..Cmd.." "..Table["EXAMPLE"]
+    end
 end
 
 function FilterCmd(Cmd)
