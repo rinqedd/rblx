@@ -36,10 +36,10 @@ CommandText.BackgroundTransparency = 0.600
 CommandText.Position = UDim2.new(0.0144031672, 0, 0.15, 0)
 CommandText.Size = UDim2.new(0.973195791, 0, 0.7, 0)
 CommandText.Font = Enum.Font.Code
-CommandText.PlaceholderText = "Press ; to focus command bar"
+CommandText.PlaceholderText = "Type cmds for a list of commands"
 CommandText.Text = ""
 CommandText.TextColor3 = Color3.fromRGB(255, 255, 255)
-CommandText.TextSize = 14.000
+CommandText.TextSize = 20
 CommandText.TextWrapped = true
 
 CommandTextRound.CornerRadius = UDim.new(0, 100)
@@ -80,7 +80,7 @@ CommandListText.BorderColor3 = Color3.fromRGB(0, 0, 0)
 CommandListText.BorderSizePixel = 0
 CommandListText.Position = UDim2.new(0.0124099441, 0, 0.0207612477, 0)
 CommandListText.Size = UDim2.new(0.973111928, 0, 0.958477497, 0)
-CommandListText.CanvasSize = UDim2.new(0, 0, 1, 0)
+CommandListText.CanvasSize = UDim2.new(0, 0, 0, 0)
 
 UIListLayout.Parent = CommandListText
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -328,7 +328,7 @@ AddCmd({"unfloat"},"",function()
     
 end)
 
-AddCmd("goto","[username]",function(Player)
+AddCmd("goto","[username] (e.g exampleUser123)",function(Player)
     local Target = Players[GetPlrFromName(Player)]
     if Target then
         Player = Target
@@ -442,11 +442,11 @@ AddCmd({"chatlogs"},"",function()
     Notify("Chatlogs","Credit to V3rtices on V3rmillion.")
 end)
 
-AddCmd({"walkspeed"},"[number]",function(Speed)
+AddCmd({"walkspeed"},"[number] (e.g 16)",function(Speed)
     LCharacter.Humanoid.WalkSpeed = Speed
 end)
 
-AddCmd({"jumppower"},"[number]",function(Jump)
+AddCmd({"jumppower"},"[number] (e.g 50)",function(Jump)
     LCharacter.Humanoid.JumpPower = Jump
 end)
 
@@ -454,14 +454,14 @@ AddCmd({"sit"},"",function()
     LCharacter.Humanoid.Sit = true
 end)
 
-AddCmd({"tpposition"},"[e.g 50,50,50]",function(Position)
+AddCmd({"tpposition"},"[position] (e.g 50,50,50)",function(Position)
     local Split = string.split(Position,",")
     if #Split == 3 then
         GetRoot(LCharacter).CFrame = CFrame.new(unpack(Split))
     end
 end)
 
-AddCmd({"tweenposition"},"[position]",function(Position,Speed)
+AddCmd({"tweenposition"},"[position] (e.g 50,50,50)",function(Position,Speed)
     local Split = string.split(Position,",")
     if #Split == 3 then
         local OldPosition = LCharacter.HumanoidRootPart.Position
@@ -480,7 +480,7 @@ AddCmd({"tweenposition"},"[position]",function(Position,Speed)
     end
 end)
 
-AddCmd({"view"},"[username]",function(Player)
+AddCmd({"view"},"[username] (e.g exampleUser123)",function(Player)
     local Target = Players[GetPlrFromName(Player)]
     local Continue = true
     if Target then
@@ -512,10 +512,33 @@ AddCmd({"prefix"},"",function(NewPrefix)
     CommandText.PlaceholderText = "Press "..Prefix.." to focus command bar"
 end)
 
+local CommandHolder = Instance.new("Folder",game.CoreGui)
+CommandHolder.Name = "CommandHolder"
+
 for Cmd,Table in pairs(Commands) do
     local CmdExample = Command:Clone()
     CmdExample.Parent = CommandListText
+    CmdExample.Name = Cmd
     CmdExample.Text = CmdExample.Text..Cmd.." "..Table["EXAMPLE"]
 end
+
+function FilterCmd(Cmd)
+    Cmd = Cmd:lower()
+    
+    for _,v in pairs(CommandHolder:GetChildren()) do
+		if v:IsA("TextLabel") and v.Text:lower():match("^"..Cmd) then
+			v.Parent = CommandListText
+		end
+	end
+	for _,v in pairs(CommandListText:GetChildren()) do
+		if v:IsA("TextLabel") and not v.Text:lower():match("^"..Cmd) then
+			v.Parent = CommandHolder
+		end
+	end
+end
+
+CmdText:GetPropertyChangedSignal("Text"):Connect(function()
+    FilterCmd(CmdText.Text)
+end)
 
 Notify("Loaded!","Press Semi-Colon ( ; ) to load the gui.")
