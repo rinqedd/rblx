@@ -46,6 +46,63 @@ CommandTextRound.CornerRadius = UDim.new(0, 100)
 CommandTextRound.Name = "CommandTextRound"
 CommandTextRound.Parent = CommandText
 
+--// Instances:
+
+local CommandList = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local CommandListText = Instance.new("ScrollingFrame")
+local UIListLayout = Instance.new("UIListLayout")
+local UIPadding = Instance.new("UIPadding")
+local Frame = Instance.new("Frame")
+local Command = Instance.new("TextLabel")
+
+--// Properties:
+
+CommandList.Name = "CommandList"
+CommandList.Parent = ScreenGui
+CommandList.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+CommandList.BackgroundTransparency = 0.600
+CommandList.BorderSizePixel = 0
+CommandList.Position = UDim2.new(0.310398728, 0, 0.542113364, 0)
+CommandList.Size = UDim2.new(0.379202545, 0, 0.442572683, 0)
+CommandList.Visible = false
+
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = CommandList
+
+CommandListText.Name = "CommandListText"
+CommandListText.Parent = CommandList
+CommandListText.Active = true
+CommandListText.AutomaticCanvasSize = "Y"
+CommandListText.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+CommandListText.BackgroundTransparency = 1.000
+CommandListText.BorderColor3 = Color3.fromRGB(0, 0, 0)
+CommandListText.BorderSizePixel = 0
+CommandListText.Position = UDim2.new(0.0124099441, 0, 0.0207612477, 0)
+CommandListText.Size = UDim2.new(0.973111928, 0, 0.958477497, 0)
+CommandListText.CanvasSize = UDim2.new(0, 0, 1, 0)
+
+UIListLayout.Parent = CommandListText
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+UIPadding.Parent = CommandListText
+
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.BackgroundTransparency = 1.000
+
+Command.Name = "Command"
+Command.Parent = Frame
+Command.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Command.BackgroundTransparency = 1.000
+Command.Position = UDim2.new(0, 0, 0, 0)
+Command.Size = UDim2.new(0, 460, 0, 30)
+Command.Font = Enum.Font.Code
+Command.Text = ""
+Command.TextColor3 = Color3.fromRGB(255, 255, 255)
+Command.TextSize = 20
+Command.TextXAlignment = Enum.TextXAlignment.Left
+
 --// ESP Library:
 
 local ESPLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/rinqedd/rblx/main/Libs/ESP%20Library"))()
@@ -130,7 +187,7 @@ function AddCmd(Name,Example,Function)
     end
     for _,Cmd in pairs(Name) do
     	Commands[Cmd] = {
-	    EXAMPLE = Example,
+	        EXAMPLE = Example,
     	    FUNC = Function
     	}
     end
@@ -153,11 +210,13 @@ CmdText.FocusLost:Connect(function()
 	    RunCmd(Cmd,Args)
 	end
 	CmdBar.Visible = false
+	CommandList.Visible = false
 end)
 
 Mouse.KeyDown:Connect(function(Key)
 	if (Key==Prefix) then
 		CmdBar.Visible = true
+		CommandList.Visible = true
         CmdText:CaptureFocus()
             spawn(function()
 			repeat CmdText.Text = '' until CmdText.Text == ''
@@ -253,23 +312,23 @@ function Unfly()
     end
 end
 
-AddCmd({"fly","flight"},"",function()
+AddCmd({"fly"},"",function()
     Fly()
 end)
 
-AddCmd({"unfly","unflight"},"",function()
+AddCmd({"unfly"},"",function()
     Unfly()
 end)
 
-AddCmd({"float","platform"},function()
+AddCmd({"float"},"",function()
     
 end)
 
-AddCmd({"unfloat","unplatform"},"",function()
+AddCmd({"unfloat"},"",function()
     
 end)
 
-AddCmd("goto","name (e.g exampleName123)",function(Player)
+AddCmd("goto","[username]",function(Player)
     local Target = Players[GetPlrFromName(Player)]
     if Target then
         Player = Target
@@ -279,7 +338,7 @@ AddCmd("goto","name (e.g exampleName123)",function(Player)
 	end)
 end)
 
-AddCmd({"locate","playeresp","espplayer"},"name (e.g exampleName123)",function(Player)
+AddCmd({"locate"},"[username or 'all']",function(Player)
     if Player == "all" then
         for _,Plr in pairs(Players:GetPlayers()) do
             ESPLib:PlayerESP(Plr,true,true)
@@ -290,7 +349,7 @@ AddCmd({"locate","playeresp","espplayer"},"name (e.g exampleName123)",function(P
     end
 end)
 
-AddCmd({"unlocate","unplayeresp","unespplayer"},"",function(Player)
+AddCmd({"unlocate"},"[username or 'all']",function(Player)
     if Player == "all" then
         for _,Plr in pairs(Players:GetPlayers()) do
             ESPLib:RemovePlayerESP(Plr)
@@ -301,7 +360,7 @@ AddCmd({"unlocate","unplayeresp","unespplayer"},"",function(Player)
     end
 end)
 
-AddCmd({"discord","afterglow"},"",function()
+AddCmd({"discord"},"",function()
     local Request = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or getgenv().request or request
 	HTTPServ = game.HttpService
 	if Request then
@@ -321,7 +380,7 @@ AddCmd({"discord","afterglow"},"",function()
 	end
 end)
 
-AddCmd({"rejoin","rj"},"",function()
+AddCmd({"rejoin"},"",function()
     if #Players:GetPlayers() <= 1 then
         game.TeleportService:Teleport(game.PlaceId,LPlayer)
     else
@@ -329,7 +388,7 @@ AddCmd({"rejoin","rj"},"",function()
     end
 end)
 
-AddCmd({"nolimbs","removelimbs","deletelimbs"},"",function()
+AddCmd({"nolimbs"},"",function()
     if CheckR15(LPlayer) then
         for _,Limb in pairs(LCharacter:GetChildren()) do
             if Limb:IsA("BasePart") and (Limb.Name == "RightUpperLeg" or Limb.Name == "LeftUpperLeg" or Limb.Name == "RightUpperArm" or Limb.Name == "LeftUpperArm") then
@@ -352,7 +411,7 @@ AddCmd("drophats","",function()
     end
 end)
 
-AddCmd({"nohats","removehats","deletehats"},"",function()
+AddCmd({"nohats"},"",function()
     for _,Hat in pairs(LCharacter:GetDescendants()) do
         if Hat:IsA("Accessory") then
             for _,Weld in pairs(Hat:GetDescendants()) do
@@ -378,16 +437,16 @@ AddCmd({"droptools"},"",function()
     end
 end)
 
-AddCmd({"chatlogs","clogs"},"",function()
+AddCmd({"chatlogs"},"",function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/rinqedd/rblx/main/Chatlogs"))()
     Notify("Chatlogs","Credit to V3rtices on V3rmillion.")
 end)
 
-AddCmd({"walkspeed","speed","ws"},"number (e.g 16)",function(Speed)
+AddCmd({"walkspeed"},"[number]",function(Speed)
     LCharacter.Humanoid.WalkSpeed = Speed
 end)
 
-AddCmd({"jumppower","jp"},"number (e.g 50"),function(Jump)
+AddCmd({"jumppower"},"[number]",function(Jump)
     LCharacter.Humanoid.JumpPower = Jump
 end)
 
@@ -395,14 +454,14 @@ AddCmd({"sit"},"",function()
     LCharacter.Humanoid.Sit = true
 end)
 
-AddCmd({"tpposition","tppos","gotopos","tptopos"},"position (e.g 50,50,50)",function(Position)
+AddCmd({"tpposition"},"[e.g 50,50,50]",function(Position)
     local Split = string.split(Position,",")
     if #Split == 3 then
         GetRoot(LCharacter).CFrame = CFrame.new(unpack(Split))
     end
 end)
 
-AddCmd({"tweenposition","tweenpos","tweenpos","tweentopos"},"position (e.g 50,50,50)",function(Position,Speed)
+AddCmd({"tweenposition"},"[position]",function(Position,Speed)
     local Split = string.split(Position,",")
     if #Split == 3 then
         local OldPosition = LCharacter.HumanoidRootPart.Position
@@ -421,7 +480,7 @@ AddCmd({"tweenposition","tweenpos","tweenpos","tweentopos"},"position (e.g 50,50
     end
 end)
 
-AddCmd({"spectate","view","watch"},"name (e.g exampleName123)",function(Player)
+AddCmd({"view"},"[username]",function(Player)
     local Target = Players[GetPlrFromName(Player)]
     local Continue = true
     if Target then
@@ -445,12 +504,18 @@ AddCmd({"spectate","view","watch"},"name (e.g exampleName123)",function(Player)
     end)
 end)
 
-AddCmd({"unspectate","unview","unwatch"},"",function()
+AddCmd({"unview"},"",function()
     workspace.CurrentCamera.CameraSubject = LCharacter
 end)
 
-AddCmd({"prefix","changeprefix"},"",function()
+AddCmd({"prefix"},"",function(NewPrefix)
     CommandText.PlaceholderText = "Press "..Prefix.." to focus command bar"
 end)
+
+for Cmd,Table in pairs(Commands) do
+    local CmdExample = Command:Clone()
+    CmdExample.Parent = CommandListText
+    CmdExample.Text = CmdExample.Text..Cmd.." "..Table["EXAMPLE"]
+end
 
 Notify("Loaded!","Press Semi-Colon ( ; ) to load the gui.")
