@@ -240,9 +240,9 @@ end
 
 function Unfly()
     for _,Part in pairs(LCharacter:GetChildren()) do
-		if Part:IsA("BasePart") then
-			Part.CanCollide = false
-		end
+	if Part:IsA("BasePart") then
+		Part.CanCollide = false
+	end
     end
     if Gyro and Vel then
         Gyro:Destroy()
