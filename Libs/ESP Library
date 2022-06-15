@@ -28,6 +28,10 @@ function MakeText(Parent,Text)
     ESPText.Size = UDim2.new(0, 100, 0, 100)
     ESPText.BorderSizePixel = 0
     ESPText.TextSize = 10
+    ESPText.BackgroundTransparency = 1
+    ESPText.TextColor3 = Color3.new(1,1,1)
+    ESPText.TextStrokeColor3 = Color3.fromRGB(6, 6, 6)
+    ESPText.TextStrokeTransparency = 0.7
     ESPText.Text = Text
     
     return ESPText
