@@ -46,7 +46,7 @@ function MakeChams(Parent,Name,Part,Player)
     Chams.Size = Part.Size
     Chams.Transparency = 0.4
     if Player then
-        Chams.Color3 = Player.TeamColor
+        Chams.Color3 = Color3.new(Player.TeamColor)
     else
         Chams.Color3 = Part.Color
     end
