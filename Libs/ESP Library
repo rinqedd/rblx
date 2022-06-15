@@ -12,22 +12,47 @@ local Instances = ESPLibrary["ESPInstances"]
 local ESPHolder = Instance.new("Folder",game.CoreGui)
 ESPHolder.Name = "ESPHolder"
 
+function MakeBBGui(Parent,Name,Part)
+    local BillboardGui = Instance.new("BillboardGui",Parent)
+    BillboardGui.Name = Name
+    BillboardGui.Adornee = Part
+    BillboardGui.Size = UDim2.new(0, 100, 0, 150)
+    BillboardGui.StudsOffset = Vector3.new(0, 2, 0)
+    BillboardGui.AlwaysOnTop = true
+    
+    return BillboardGui
+end
+
+function MakeText(Parent,Text)
+    local ESPText = Instance.new("TextLabel",Parent)
+    ESPText.Size = UDim2.new(0, 100, 0, 100)
+    ESPText.BorderSizePixel = 0
+    ESPText.TextSize = 10
+    ESPText.Text = Text
+    
+    return ESPText
+end
+
+function MakeChams(Parent,Name,Part)
+    local Chams = Instance.new("BoxHandleAdornment",Parent)
+    Chams.Name = Name
+    Chams.Adornee = Part
+    Chams.AlwaysOnTop = true
+    Chams.ZIndex = 10
+    Chams.Size = Part.Size
+    Chams.Transparency = 0.4
+    Chams.Color3 = Part.Color
+    
+    return Chams
+end
+
 function ESPLibrary:PartESP(Part,Text,Chams,Studs)
     local Holder = Instance.new("Folder",ESPHolder)
     Holder.Name = (Part.Name.."Holder")
     
     if Text ~= "" then
-        local BillboardGui = Instance.new("BillboardGui",Holder)
-        BillboardGui.Name = Part.Name.."TEXT"
-        BillboardGui.Adornee = Part
-        BillboardGui.Size = UDim2.new(0, 100, 0, 150)
-        BillboardGui.StudsOffset = Vector3.new(0, 2, 0)
-        BillboardGui.AlwaysOnTop = true
-        local ESPText = Instance.new("TextLabel",BillboardGui)
-        ESPText.Size = UDim2.new(0, 100, 0, 100)
-        ESPText.BorderSizePixel = 0
-        ESPText.TextSize = 10
-        ESPText.Text = Text
+        local BillboardGui = MakeBBGui(Holder,Part.Name.."TEXT",Part)
+        local ESPText = MakeText(BillboardGui,Text)
         if Studs then
             ESPText.Text = Text.."\nDistance: "..tostring(math.floor((Player.Character.HumanoidRootPart.Position-Part.Position).magnitude))
             spawn(function()
@@ -43,14 +68,7 @@ function ESPLibrary:PartESP(Part,Text,Chams,Studs)
     end
     
     if Chams then
-        local Cham = Instance.new("BoxHandleAdornment",Holder)
-    	Cham.Name = Part.Name.."CHAMS"
-    	Cham.Adornee = Part
-    	Cham.AlwaysOnTop = true
-    	Cham.ZIndex = 10
-    	Cham.Size = Part.Size
-    	Cham.Transparency = 0.4
-    	Cham.Color3 = Part.Color
+        local Cham = MakeChams(Holder,Part.Name.."CHAMS",Part)
     end
     
     Part.Parent.ChildRemoved:Connect(function(Removed)
@@ -72,35 +90,15 @@ function ESPLibrary:PlayerESP(Player,ShowName,Chams)
     
     for i,v in pairs(Character:GetChildren()) do
         if v:IsA("BasePart") and v.Name == "Head" and ShowName then
-            local BillboardGui = Instance.new("BillboardGui",Holder)
-            BillboardGui.Name = v.Name.."TEXT"
-            BillboardGui.Adornee = v
-            BillboardGui.Size = UDim2.new(0, 100, 0, 150)
-            BillboardGui.StudsOffset = Vector3.new(0, 2, 0)
-            BillboardGui.AlwaysOnTop = true
-            local ESPText = Instance.new("TextLabel",BillboardGui)
-            ESPText.Size = UDim2.new(0, 100, 0, 100)
-            ESPText.BorderSizePixel = 0
-            ESPText.TextSize = 10
-            ESPText.Text = "Name: "..Player.Name.."\nHealth: "..Character.Humanoid.Health
-            ESPText.BackgroundTransparency = 1
-            ESPText.TextColor3 = Color3.new(1,1,1)
-            ESPText.TextStrokeColor3 = Color3.fromRGB(6, 6, 6)
-            ESPText.TextStrokeTransparency = 0.7
+            local BillboardGui = MakeBBGui(Holder,v.Name.."TEXT",v)
+            local ESPText = MakeText(BillboardGui,"Name: "..Player.Name.."\nHealth: "..Character.Humanoid.Health)
             Character.Humanoid:GetPropertyChangedSignal("Health"):Connect(function()
                 ESPText.Text = "Name: "..Player.Name.."\nHealth: "..Character.Humanoid.Health
             end)
         end
         
         if v.Name ~= "HumanoidRootPart" and v:IsA("BasePart") and Chams then
-            local Cham = Instance.new("BoxHandleAdornment",Holder)
-            Cham.Name = v.Name.."CHAMS"
-            Cham.Adornee = v
-            Cham.AlwaysOnTop = true
-            Cham.ZIndex = 10
-            Cham.Size = v.Size
-            Cham.Transparency = 0.4
-            Cham.Color = Player.TeamColor
+            local Cham = MakeChams(Holder,v.Name.."CHAMS",v)
         end
         
         Character.Parent.ChildRemoved:Connect(function(Char)
