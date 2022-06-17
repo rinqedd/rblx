@@ -3,7 +3,7 @@
 local Config = {
     WindowName = "Tower of Hell",
 	Color = Color3.fromRGB(255,128,64),
-	Keybind = Enum.KeyCode.RightControl -- Broken (Library problem)
+	Keybind = Enum.KeyCode.RightControl -- Broken
 }
 
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexR32/Roblox/main/BracketV3.lua"))()
