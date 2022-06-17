@@ -123,7 +123,7 @@ local queue_teleport = syn and syn.queue_on_teleport or queue_on_teleport or flu
 LPlayer.OnTeleport:Connect(function(State)
     if State == Enum.TeleportState.Started then
         if queue_teleport then
-            queue_teleport("loadstring(game:HttpGet(\"https://raw.githubusercontent.com/rinqedd/rblx/main/UnnamedAdmin\", true))()")
+            queue_teleport("loadstring(game:HttpGet(\"https://raw.githubusercontent.com/rinqedd/rblx/main/scripts/UnnamedAdmin\", true))()")
         end
     end
 end)
