@@ -72,7 +72,7 @@ end)
 MapSec:CreateButton("Destroy All Kill Parts",function()
     for i,v in pairs(workspace.tower.sections:GetDescendants()) do
         if v.Name == "kills" then
-            v.Parent.Materal = "Plastic"
+            v.Parent.Material = "Plastic"
 	    v:Destroy()
         end
     end
