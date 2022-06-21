@@ -35,21 +35,9 @@ function MakeText(Parent,Text)
     return ESPText
 end
 
-function MakePartChams(Parent,Name,Part)
-    local Chams = Instance.new("BoxHandleAdornment",Parent)
-    Chams.Name = Name
-    Chams.Adornee = Part
-    Chams.AlwaysOnTop = true
-    Chams.ZIndex = 10
-    Chams.Size = Part.Size
-    Chams.Transparency = 0.4
-    
-    return Chams
-end
-
-function MakeChams(Parent,Name,Character,Color)
+function MakeChams(Parent,Name,Model,Color)
     local Highlight = Instance.new("Highlight",Parent)
-    Highlight.Adornee = Character
+    Highlight.Adornee = Model
     if Color then
         Highlight.FillColor = Color
     end
@@ -57,7 +45,8 @@ function MakeChams(Parent,Name,Character,Color)
     return Hightlight
 end
 
-function ESPLibrary:PartESP(Part,Text,Chams,Studs)
+function ESPLibrary:PartESP(Part,Color,Text,Chams,Studs)
+    if not Text then Text = "" end
     if not Chams then Chams = true end
     if not Studs then Studs = true end
 
@@ -70,7 +59,7 @@ function ESPLibrary:PartESP(Part,Text,Chams,Studs)
         if Studs then
             ESPText.Text = Text.."\nDistance: "..tostring(math.floor((Player.Character.HumanoidRootPart.Position-Part.Position).magnitude))
             spawn(function()
-                while wait(0.1) and ESPText do
+                while wait(0.2) and ESPText do
                     ESPText.Text = Text.."\nDistance: "..tostring(math.floor((Player.Character.HumanoidRootPart.Position-Part.Position).magnitude))
                 end
             end)
@@ -82,7 +71,7 @@ function ESPLibrary:PartESP(Part,Text,Chams,Studs)
     end
     
     if Chams then
-        local Cham = MakePartChams(Holder,Part.Name.."CHAMS",Part)
+        local Cham = MakeChams(Holder,Part.Name.."CHAMS",Part,Color)
     end
     
     Part.Parent.ChildRemoved:Connect(function(Removed)
