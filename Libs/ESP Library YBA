@@ -47,9 +47,12 @@ function MakePartChams(Parent,Name,Part)
     return Chams
 end
 
-function MakeChams(Parent,Name,Character)
+function MakeChams(Parent,Name,Character,Color)
     local Highlight = Instance.new("Highlight",Parent)
     Highlight.Adornee = Character
+    if Color then
+        Highlight.FillColor = Color
+    end
     
     return Hightlight
 end
@@ -93,7 +96,7 @@ function ESPLibrary:PartESP(Part,Text,Chams,Studs)
     Instances[Part] = Holder
 end
 
-function ESPLibrary:PlayerESP(Player,ShowName,Chams)
+function ESPLibrary:PlayerESP(Player,ShowName,Chams,Color)
     if not ShowName then ShowName = true end
     if not Chams then Chams = true end
 
@@ -110,7 +113,7 @@ function ESPLibrary:PlayerESP(Player,ShowName,Chams)
     end)
     
     if Chams then
-        local Cham = MakeChams(Holder,Player.Name.."CHAMS",Character)
+        local Cham = MakeChams(Holder,Player.Name.."CHAMS",Character,Color)
     end
     
     Character.Parent.ChildRemoved:Connect(function(Char)
