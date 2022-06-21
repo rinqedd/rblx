@@ -61,9 +61,9 @@ function ESPLibrary:ItemESP(Model,Color,Text,Chams,Studs)
             ESPText.Text = Text.."\nDistance: "..tostring(math.floor((Player.Character.HumanoidRootPart.Position-PosPart.Position).magnitude))
             spawn(
                 while wait(0.2) and ESPText do
-                    pcall(function()
+                    if Player.Character then
                         ESPText.Text = Text.."\nDistance: "..tostring(math.floor((Player.Character.HumanoidRootPart.Position-PosPart.Position).magnitude))
-                    end)
+                    end
                 end
             end)
         end
