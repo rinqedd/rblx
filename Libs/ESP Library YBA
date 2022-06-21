@@ -35,7 +35,7 @@ function MakeText(Parent,Text)
     return ESPText
 end
 
-function MakeChams(Parent,Name,Part,Player)
+function MakePartChams(Parent,Name,Part)
     local Chams = Instance.new("BoxHandleAdornment",Parent)
     Chams.Name = Name
     Chams.Adornee = Part
@@ -43,13 +43,15 @@ function MakeChams(Parent,Name,Part,Player)
     Chams.ZIndex = 10
     Chams.Size = Part.Size
     Chams.Transparency = 0.4
-    if Player then
-        Chams.Color3 = Player.TeamColor.Color
-    else
-        Chams.Color3 = Part.Color
-    end
     
     return Chams
+end
+
+function MakeChams(Parent,Name,Player)
+    local Highlight = Instance.new("Highlight",Parent)
+    Highlight.Adornee = Player
+    
+    return Hightlight
 end
 
 function ESPLibrary:PartESP(Part,Text,Chams,Studs)
@@ -77,7 +79,7 @@ function ESPLibrary:PartESP(Part,Text,Chams,Studs)
     end
     
     if Chams then
-        local Cham = MakeChams(Holder,Part.Name.."CHAMS",Part)
+        local Cham = MakePartChams(Holder,Part.Name.."CHAMS",Part)
     end
     
     Part.Parent.ChildRemoved:Connect(function(Removed)
@@ -109,20 +111,20 @@ function ESPLibrary:PlayerESP(Player,ShowName,Chams)
             end)
         end
         
-        if v.Name ~= "HumanoidRootPart" and v:IsA("BasePart") and Chams then
-            local Cham = MakeChams(Holder,v.Name.."CHAMS",v,Player)
-        end
-        
         Character.Parent.ChildRemoved:Connect(function(Char)
             if Character == Char then
                 Holder:Destroy()
                 table.remove(Instances,table.find(Instances,Player))
             end
         end)
-        
-        table.insert(Instances,Player)
-        Instances[Player] = Holder
     end
+    
+    if Chams then
+        MakeChams(Holder,v.Name.."CHAMS",Character)
+    end
+    
+    table.insert(Instances,Player)
+    Instances[Player] = Holder
 end
 
 function ESPLibrary:RemovePlayerESP(Player)
