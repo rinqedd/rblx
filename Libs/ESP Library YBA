@@ -46,6 +46,10 @@ function MakeChams(Parent,Name,Model,Color)
 end
 
 function ESPLibrary:PartESP(Part,Color,Text,Chams,Studs)
+    local PosPart
+    if not Part:IsA("BasePart") then
+        PosPart = Part:FindFirstChildWhichIsA("BasePart")
+    end
     if not Text then Text = "" end
     if not Chams then Chams = true end
     if not Studs then Studs = true end
@@ -57,10 +61,10 @@ function ESPLibrary:PartESP(Part,Color,Text,Chams,Studs)
         local BillboardGui = MakeBBGui(Holder,Part.Name.."TEXT",Part)
         local ESPText = MakeText(BillboardGui,Text)
         if Studs then
-            ESPText.Text = Text.."\nDistance: "..tostring(math.floor((Player.Character.HumanoidRootPart.Position-Part.Position).magnitude))
+            ESPText.Text = Text.."\nDistance: "..tostring(math.floor((Player.Character.HumanoidRootPart.Position-PosPart.Position).magnitude))
             spawn(function()
                 while wait(0.2) and ESPText do
-                    ESPText.Text = Text.."\nDistance: "..tostring(math.floor((Player.Character.HumanoidRootPart.Position-Part.Position).magnitude))
+                    ESPText.Text = Text.."\nDistance: "..tostring(math.floor((Player.Character.HumanoidRootPart.Position-PosPart.Position).magnitude))
                 end
             end)
         end
