@@ -38,20 +38,14 @@ function MakeText(Parent,Text)
 end
 
 function MakeChams(Parent,Name,Part,Player)
-    local Chams = Instance.new("BoxHandleAdornment",Parent)
-    Chams.Name = Name
-    Chams.Adornee = Part
-    Chams.AlwaysOnTop = true
-    Chams.ZIndex = 10
-    Chams.Size = Part.Size
-    Chams.Transparency = 0.4
+    local Hightlight = Instance.new("BoxHandleAdornment",Parent)
     if Player then
-        Chams.Color3 = Player.TeamColor.Color
+        Hightlight.FillColor = Player.TeamColor.Color
     else
-        Chams.Color3 = Part.Color
+        Hightlight.FillColor = Part.Color
     end
     
-    return Chams
+    return Hightlight
 end
 
 function ESPLibrary:PartESP(Part,Text,Chams,Studs)
