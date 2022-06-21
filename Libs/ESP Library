@@ -49,8 +49,8 @@ function MakePartChams(Parent,Name,Part)
     return Chams
 end
 
-function MakeChams(Parent,Name,Part,Player)
-    local Highlight = Instance.new("BoxHandleAdornment",Parent)
+function MakeChams(Parent,Name,Player)
+    local Highlight = Instance.new("Highlight",Parent)
     Highlight.Adornee = Player.Character
     
     return Hightlight
@@ -93,6 +93,9 @@ function ESPLibrary:PartESP(Part,Text,Chams,Studs)
 end
 
 function ESPLibrary:PlayerESP(Player,ShowName,Chams)
+    if not ShowName then ShowName = true end
+    if not Chams then Chams = true end
+
     local Character = Player.Character
 
     local Holder = Instance.new("Folder",ESPHolder)
@@ -107,19 +110,16 @@ function ESPLibrary:PlayerESP(Player,ShowName,Chams)
             end)
         end
         
-        if v.Name ~= "HumanoidRootPart" and v:IsA("BasePart") and Chams then
-            local Cham = MakeChams(Holder,v.Name.."CHAMS",v,Player)
-        end
-        
         Character.Parent.ChildRemoved:Connect(function(Char)
             if Character == Char then
                 Holder:Destroy()
                 table.remove(Instances,table.find(Instances,Player))
             end
         end)
-        
-        table.insert(Instances,Player)
-        Instances[Player] = Holder
+    end
+    
+    if Chams then
+        MakeChams(Holder,v.Name.."CHAMS",Player)
     end
 end
 
