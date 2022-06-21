@@ -47,9 +47,9 @@ function MakePartChams(Parent,Name,Part)
     return Chams
 end
 
-function MakeChams(Parent,Name,Player)
+function MakeChams(Parent,Name,Character)
     local Highlight = Instance.new("Highlight",Parent)
-    Highlight.Adornee = Player
+    Highlight.Adornee = Character
     
     return Hightlight
 end
