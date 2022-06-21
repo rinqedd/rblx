@@ -120,7 +120,7 @@ function ESPLibrary:PlayerESP(Player,ShowName,Chams)
     end
     
     if Chams then
-        MakeChams(Holder,v.Name.."CHAMS",Character)
+        MakeChams(Holder,Player.Name.."CHAMS",Character)
     end
     
     table.insert(Instances,Player)
