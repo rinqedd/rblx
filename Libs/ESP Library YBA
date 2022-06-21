@@ -59,7 +59,7 @@ function ESPLibrary:ItemESP(Model,Color,Text,Chams,Studs)
         local ESPText = MakeText(BillboardGui,Text)
         if Studs then
             ESPText.Text = Text.."\nDistance: "..tostring(math.floor((Player.Character.HumanoidRootPart.Position-PosPart.Position).magnitude))
-            spawn(
+            spawn(function()
                 while wait(0.2) and ESPText do
                     if Player.Character then
                         ESPText.Text = Text.."\nDistance: "..tostring(math.floor((Player.Character.HumanoidRootPart.Position-PosPart.Position).magnitude))
