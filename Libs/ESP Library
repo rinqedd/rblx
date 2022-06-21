@@ -119,7 +119,7 @@ function ESPLibrary:PlayerESP(Player,ShowName,Chams)
     end
     
     if Chams then
-        MakeChams(Holder,v.Name.."CHAMS",Player)
+        MakeChams(Holder,Player.Name.."CHAMS",Player)
     end
 end
 
