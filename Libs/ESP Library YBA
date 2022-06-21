@@ -96,7 +96,7 @@ function ESPLibrary:PartESP(Part,Text,Chams,Studs)
     Instances[Part] = Holder
 end
 
-function ESPLibrary:PlayerESP(Player,ShowName,Chams,Color)
+function ESPLibrary:PlayerESP(Player,Color,ShowName,Chams)
     if not ShowName then ShowName = true end
     if not Chams then Chams = true end
 
