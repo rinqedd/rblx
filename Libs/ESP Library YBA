@@ -45,20 +45,17 @@ function MakeChams(Parent,Name,Model,Color)
     return Hightlight
 end
 
-function ESPLibrary:PartESP(Part,Color,Text,Chams,Studs)
-    local PosPart
-    if not Part:IsA("BasePart") then
-        PosPart = Part:FindFirstChildWhichIsA("BasePart")
-    end
+function ESPLibrary:ItemESP(Model,Color,Text,Chams,Studs)
+    local PosPart = Model:FindFirstChildWhichIsA("BasePart")
     if not Text then Text = "" end
     if not Chams then Chams = true end
     if not Studs then Studs = true end
 
     local Holder = Instance.new("Folder",ESPHolder)
-    Holder.Name = (Part.Name.."Holder")
+    Holder.Name = (Model.Name.."Holder")
     
     if Text ~= "" then
-        local BillboardGui = MakeBBGui(Holder,Part.Name.."TEXT",Part)
+        local BillboardGui = MakeBBGui(Holder,Model.Name.."TEXT",Model)
         local ESPText = MakeText(BillboardGui,Text)
         if Studs then
             ESPText.Text = Text.."\nDistance: "..tostring(math.floor((Player.Character.HumanoidRootPart.Position-PosPart.Position).magnitude))
@@ -75,18 +72,18 @@ function ESPLibrary:PartESP(Part,Color,Text,Chams,Studs)
     end
     
     if Chams then
-        local Cham = MakeChams(Holder,Part.Name.."CHAMS",Part,Color)
+        local Cham = MakeChams(Holder,Model.Name.."CHAMS",Model,Color)
     end
     
-    Part.Parent.ChildRemoved:Connect(function(Removed)
-        if Part == Removed then
+    Model.Parent.ChildRemoved:Connect(function(Removed)
+        if Model == Removed then
             Holder:Destroy()
-            table.remove(Instances,table.find(Instances,Part))
+            table.remove(Instances,table.find(Instances,Model))
         end
     end)
     
-    table.insert(Instances,Part)
-    Instances[Part] = Holder
+    table.insert(Instances,Model)
+    Instances[Model] = Holder
 end
 
 function ESPLibrary:PlayerESP(Player,Color,ShowName,Chams)
