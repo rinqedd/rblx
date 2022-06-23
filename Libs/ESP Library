@@ -121,6 +121,9 @@ function ESPLibrary:PlayerESP(Player,ShowName,Chams)
     if Chams then
         MakeChams(Holder,Player.Name.."CHAMS",Player)
     end
+    
+    table.insert(Instances,Player)
+    Instances[Player] = Holder
 end
 
 function ESPLibrary:RemovePlayerESP(Player)
