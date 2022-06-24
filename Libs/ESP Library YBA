@@ -63,7 +63,7 @@ function ESPLibrary:ItemESP(Model,Text,Chams,Studs)
             ESPText.Text = Text.."\nDistance: "..tostring(math.floor((Player.Character.HumanoidRootPart.Position-PosPart.Position).magnitude))
             spawn(function()
                 while wait(0.2) and ESPText do
-                    if Player.Character then
+                    if Player.Character and Player.Character:FindFirstChild("HumanoidRootPart") then
                         ESPText.Text = Text.."\nDistance: "..tostring(math.floor((Player.Character.HumanoidRootPart.Position-PosPart.Position).magnitude))
                     end
                 end
