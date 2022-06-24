@@ -45,7 +45,7 @@ function MakeChams(Parent,Name,Model,Color)
     return Hightlight
 end
 
-function ESPLibrary:ItemESP(Model,Color,Text,Chams,Studs)
+function ESPLibrary:ItemESP(Model,Text,Chams,Studs)
     local PosPart = Model:FindFirstChildWhichIsA("BasePart")
     if not Text then Text = "" end
     if not Chams then Chams = true end
@@ -88,7 +88,7 @@ function ESPLibrary:ItemESP(Model,Color,Text,Chams,Studs)
     Instances[Model] = Holder
 end
 
-function ESPLibrary:PlayerESP(Player,Color,ShowName,Chams)
+function ESPLibrary:PlayerESP(Player,ShowName,Chams)
     if not ShowName then ShowName = true end
     if not Chams then Chams = true end
 
