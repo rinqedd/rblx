@@ -102,7 +102,7 @@ function ESPLibrary:PlayerESP(Player,ShowName,Chams)
     end)
     
     if Chams then
-        local Cham = MakeChams(Holder,Player.Name.."CHAMS",Character,Color)
+        local Cham = MakeChams(Holder,Player.Name.."CHAMS",Character)
     end
     
     Character.Parent.ChildRemoved:Connect(function(Char)
