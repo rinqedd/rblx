@@ -35,12 +35,9 @@ function MakeText(Parent,Text)
     return ESPText
 end
 
-function MakeChams(Parent,Name,Model,Color)
+function MakeChams(Parent,Name,Model)
     local Highlight = Instance.new("Highlight",Parent)
     Highlight.Adornee = Model
-    if Color then
-        Highlight.FillColor = Color
-    end
     
     return Hightlight
 end
@@ -74,7 +71,7 @@ function ESPLibrary:ItemESP(Model,Text,Chams,Studs)
     end
     
     if Chams then
-        local Cham = MakeChams(Holder,Model.Name.."CHAMS",Model,Color)
+        local Cham = MakeChams(Holder,Model.Name.."CHAMS",Model)
     end
     
     Model.Parent.ChildRemoved:Connect(function(Removed)
