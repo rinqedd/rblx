@@ -44,7 +44,7 @@ end
 
 function ESPLibrary:ItemESP(Model,Text,Chams,Studs)
     for _,Base in pairs(Model:GetChildren()) do
-        if Base:IsA("BasePart") then
+        if Base:IsA("BasePart") and Base.Transparency ~= 1 then
             Base.Transparency = 0
         end
     end
