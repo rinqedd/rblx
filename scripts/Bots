@@ -1,0 +1,237 @@
+repeat wait() until game:IsLoaded()
+
+local OwnerName = "rinqed"
+
+local Players = game.Players
+local Owner = Players:FindFirstChild(OwnerName)
+local Player = Players.LocalPlayer
+
+setfpscap(60)
+
+if Owner and Player.Name ~= Owner.Name then
+    setfpscap(30)
+    game.RunService:Set3dRenderingEnabled(false)
+    
+    function Chat(Text)
+        game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Text,"All")
+    end
+    
+    local Character = Player.Character
+    Player.CharacterAdded:Connect(function(Char)
+        Character = Char
+    end)
+    
+    local Commands = {}
+    local BannedCmd = {".kick",".addowner",".clearowner",".chat",".cmds"}
+    local OwnerConns = {}
+    local Spam = false
+    local Rick = false
+    
+    function Root(Char)
+        return Char.HumanoidRootPart or Char.Torso
+    end
+    
+    function GetPlayer(Name)
+        local Plr
+        Name = Name:lower()
+        
+    	for i,v in pairs(Players:GetPlayers()) do
+    		if v.Name:lower():match("^"..Name) then
+    			Plr = v
+    			break
+    		end
+    	end
+    
+    	return Plr
+    end
+    
+    function AddCmd(Cmd,Function)
+        Commands[Cmd] = Function
+    end
+    
+    function RunCmd(Cmd,Args,Speaker)
+	    if Cmd == ".bring" then
+            Commands[Cmd](unpack(Args),Speaker)
+        else
+            Commands[Cmd](unpack(Args))
+        end
+    end
+    
+    function OnChat(Message)
+        local Args = string.split(Message," ")
+        local Cmd = Args[1]
+        table.remove(Args,1)
+        
+        if Commands[Cmd] then
+            RunCmd(Cmd,Args)
+        end
+    end
+    
+    function OnChat2(Speaker,Message)
+        local Args = string.split(Message," ")
+        local Cmd = Args[1]
+        table.remove(Args,1)
+        
+        if Commands[Cmd] and not table.find(BannedCmd,Cmd) then
+            RunCmd(Cmd,Args,Speaker)
+        end
+    end
+    
+    Owner.Chatted:Connect(OnChat)
+    
+    AddCmd(".tp",function(Plr,Vic)
+        if Plr == "all" or GetPlayer(Plr) == Player then
+            Vic = GetPlayer(Vic).Character
+            Character.Humanoid.Jump = true
+            Root(Character).CFrame = Root(Vic).CFrame
+        end
+    end)
+    
+    AddCmd(".bring",function(Plr,Speaker)
+        if Plr == "all" or GetPlayer(Plr) == Player then
+            local Vic
+            if Speaker then 
+                Vic = GetPlayer(Speaker).Character
+            else 
+                Vic = Owner.Character
+            end
+            Root(Character).CFrame = Root(Vic).CFrame
+        end
+    end)
+    
+    AddCmd(".reset",function(Plr)
+        if Plr == "all" or GetPlayer(Plr) == Player then
+            Character.Humanoid.Health = 0
+        end
+    end)
+    
+    AddCmd(".kick",function(Plr)
+        if Plr == "all" or GetPlayer(Plr) == Player then
+            Player:Kick("Forcefully disconnected by owner: "..Owner.Name)
+        end
+    end)
+    
+    AddCmd(".chat",function(Plr,...)
+        if Plr == "all" or GetPlayer(Plr) == Player then
+            local Args = {...}
+            local Text = ""
+            for _,v in pairs(Args) do
+                Text = Text.." "..v
+            end
+            Chat(Text)
+        end
+    end)
+
+    AddCmd(".walkto",function(Plr,Vic)
+        if Plr == "all" or GetPlayer(Plr) == Player then
+            Vic = GetPlayer(Vic).Character
+            Character.Humanoid.WalkToPoint = Root(Vic).Position
+        end
+    end)
+    
+    AddCmd(".jump",function(Plr)
+        if Plr == "all" or GetPlayer(Plr) == Player then
+            Character.Humanoid.Jump = true
+        end
+    end)
+    
+    AddCmd(".sit",function(Plr)
+        if Plr == "all" or GetPlayer(Plr) == Player then
+            Character.Humanoid.Sit = true
+        end
+    end)
+    
+    AddCmd(".walkspeed",function(Plr,Speed)
+        if Plr == "all" or GetPlayer(Plr) == Player then
+            Character.Humanoid.WalkSpeed = Speed
+        end
+    end)
+    
+    AddCmd(".jumppower",function(Plr,Power)
+        if Plr == "all" or GetPlayer(Plr) == Player then
+            Character.Humanoid.JumpPower = Power
+        end
+    end)
+    
+    AddCmd(".hipheight",function(Plr,Height)
+        if Plr == "all" or GetPlayer(Plr) == Player then
+            Character.Humanoid.HipHeight = Height
+        end
+    end)
+    
+    AddCmd(".spam",function(Plr,...)
+        if Plr == "all" or GetPlayer(Plr) == Player then
+            local Args = {...}
+            local Text = ""
+            for _,v in pairs(Args) do
+                Text = Text.." "..v
+            end
+            Spam = true
+            while Spam and wait(1) do
+                Chat(Text)
+            end
+        end
+    end)
+    
+    AddCmd(".unspam",function(Plr)
+        if Plr == "all" or GetPlayer(Plr) == Player then
+            Spam = false
+        end
+    end)
+    
+    AddCmd(".rick",function(Plr)
+        if Plr == "all" or GetPlayer(Plr) == Player then
+            local Text = "Never gonna give you up, never gonna let you down. Never gonna run around, desert you. Never gonna make you cry, never gonna say goodbye."
+            Rick = true
+            while Rick and wait(1) do
+                Chat(Text)
+            end
+        end
+    end)
+    
+    AddCmd(".unrick",function(Plr)
+        if Plr == "all" or GetPlayer(Plr) == Player then
+            Rick = false
+        end
+    end)
+    
+    AddCmd("rejoin",function(Plr)
+        syn.queue_on_teleport([[loadstring(game:HttpGet("https://github.com/rinqedd/rblx/blob/main/scripts/UnnamedAdmin"))()]])
+        if #Players:GetPlayers() <= 1 then
+            game.TeleportService:Teleport(game.PlaceId,Player)
+        else
+            game.TeleportService:TeleportToPlaceInstance(game.PlaceId,game.JobId,Player)
+        end
+    end)
+    
+    AddCmd(".addowner",function(Plr)
+        local User = GetPlayer(Plr)
+        local Conn = User.Chatted:Connect(function(Message)
+            OnChat2(User.Name,Message)
+        end)
+        table.insert(OwnerConns,Conn)
+        Chat("Added owner "..User.Name)
+    end)
+    
+    AddCmd(".clearowner",function()
+        for i,Conn in pairs(OwnerConns) do
+            Conn:Disconnect()
+            table.remove(OwnerConns,i)
+        end
+        Chat("Removed all owners")
+    end)
+    
+    AddCmd(".cmds",function(Plr)
+        if Plr == "all" or GetPlayer(Plr) == Player then
+            local Cmds = ""
+            for Cmd,_ in pairs(Commands) do
+                if Cmds == "" then
+                    Cmds = Cmds..Cmd
+                else
+                    Cmds = Cmds.." | "..Cmd
+                end
+            end
+            Chat(Cmds)
+        end
+    end)
+end
