@@ -19,7 +19,7 @@ if Owner and Player.Name ~= Owner.Name then
     end)
     
     local Commands = {}
-    local BannedCmd = {".kick",".addowner",".clearowner",".spam"}
+    local BannedCmd = {"kick","addowner","clearowner","spam"}
     local OwnerConns = {}
     local Spam = false
     
