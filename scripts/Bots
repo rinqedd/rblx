@@ -18,7 +18,7 @@ if Owner and Player.Name ~= Owner.Name then
         Character = Char
     end)
     
-    local BotOrder = {"rinq_Bot","rinq_Bot0","rinq_Bot1","rinq_Bot2","rinq_Bot3","rinq_Bot4","rinq_Bot5","rinq_Bot6","rinq_Bot8","rinq_Bot9"}
+    local BotOrder = {"RalphSchaefer30","AmyBurns100","GaryJohnston73","WarrenYoung33","TonyaDoyle24","rinq_Bot4","rinq_Bot5","rinq_Bot6","rinq_Bot8","rinq_Bot9"}
     local Commands = {}
     local BannedCmd = {"kick","addowner","clearowner","spam","rejoin"}
     local OwnerConns = {}
@@ -86,11 +86,9 @@ if Owner and Player.Name ~= Owner.Name then
     
     AddCmd("bring",function(Plr,Speaker)
         if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            local Vic
+            local Vic = Owner.Character
             if Speaker then 
                 Vic = GetPlayer(Speaker).Character
-            else 
-                Vic = Owner.Character
             end
             Root(Character).CFrame = Root(Vic).CFrame
         end
@@ -192,26 +190,26 @@ if Owner and Player.Name ~= Owner.Name then
         end
     end)
     
-    AddCmd("sort",function(Speaker)
-        local Vic
-        if Speaker then 
-            Vic = GetPlayer(Speaker).Character
-        else 
-            Vic = Owner.Character
+    AddCmd("sort",function(Plr,Speaker)
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
+            local Vic = Owner.Character
+            if Speaker then 
+                Vic = GetPlayer(Speaker).Character
+            end
+            local Position = Vector3.new((table.find(BotOrder,Player.Name))*3,0,0)
+            Root(Character).CFrame = Root(Vic).CFrame * CFrame.new(Position)
         end
-        local Position = Vector3.new((table.find(BotOrder,Player.Name))*3,0,0)
-        Root(Character).CFrame = Root(Vic).CFrame * CFrame.new(Position)
     end)
     
-    AddCmd("line",function(Speaker)
-        local Vic
-        if Speaker then 
-            Vic = GetPlayer(Speaker).Character
-        else 
-            Vic = Owner.Character
+    AddCmd("line",function(Plr,Speaker)
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
+            local Vic = Owner.Character
+            if Speaker then 
+                Vic = GetPlayer(Speaker).Character
+            end
+            local Position = Vector3.new(0,0,(table.find(BotOrder,Player.Name))*3)
+            Root(Character).CFrame = Root(Vic).CFrame * CFrame.new(Position)
         end
-        local Position = Vector3.new(0,0,(table.find(BotOrder,Player.Name))*3)
-        Root(Character).CFrame = Root(Vic).CFrame * CFrame.new(Position)
     end)
     
     AddCmd("addowner",function(Plr)
