@@ -46,7 +46,7 @@ if Owner and Player.Name ~= Owner.Name then
     end
     
     function RunCmd(Cmd,Args,Speaker)
-	    if Cmd == ".bring" then
+	    if Cmd == "bring" then
             Commands[Cmd](unpack(Args),Speaker)
         else
             Commands[Cmd](unpack(Args))
