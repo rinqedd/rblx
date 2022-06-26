@@ -18,7 +18,7 @@ if Owner and Player.Name ~= Owner.Name then
         Character = Char
     end)
     
-    local BotOrder = {"rinq_Bot1","rinq_Bot2","rinq_Bot3","rinq_Bot4","rinq_Bot5"}
+    local BotOrder = {"rinq_Bot","rinq_Bot0","rinq_Bot1","rinq_Bot2","rinq_Bot3","rinq_Bot4","rinq_Bot5","rinq_Bot6","rinq_Bot8","rinq_Bot9"}
     local Commands = {}
     local BannedCmd = {"kick","addowner","clearowner","spam","rejoin"}
     local OwnerConns = {}
@@ -47,7 +47,7 @@ if Owner and Player.Name ~= Owner.Name then
     end
     
     function RunCmd(Cmd,Args,Speaker)
-	    if Cmd == "bring" then
+	    if Cmd == "bring" or Cmd == "line" or Cmd == "sort" then
             Commands[Cmd](unpack(Args),Speaker)
         else
             Commands[Cmd](unpack(Args))
@@ -192,14 +192,26 @@ if Owner and Player.Name ~= Owner.Name then
         end
     end)
     
-    AddCmd("sort",function()
+    AddCmd("sort",function(Speaker)
+        local Vic
+        if Speaker then 
+            Vic = GetPlayer(Speaker).Character
+        else 
+            Vic = Owner.Character
+        end
         local Position = Vector3.new((table.find(BotOrder,Player.Name))*3,0,0)
-        Root(Character).CFrame = Root(Owner.Character).CFrame * CFrame.new(Position)
+        Root(Character).CFrame = Root(Vic).CFrame * CFrame.new(Position)
     end)
     
-    AddCmd("line",function()
+    AddCmd("line",function(Speaker)
+        local Vic
+        if Speaker then 
+            Vic = GetPlayer(Speaker).Character
+        else 
+            Vic = Owner.Character
+        end
         local Position = Vector3.new(0,0,(table.find(BotOrder,Player.Name))*3)
-        Root(Character).CFrame = Root(Owner.Character).CFrame * CFrame.new(Position)
+        Root(Character).CFrame = Root(Vic).CFrame * CFrame.new(Position)
     end)
     
     AddCmd("addowner",function(Plr)
