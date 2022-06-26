@@ -18,8 +18,9 @@ if Owner and Player.Name ~= Owner.Name then
         Character = Char
     end)
     
+    local BotOrder = {"rinq_Bot1","rinq_Bot2","rinq_Bot3","rinq_Bot4","rinq_Bot5"}
     local Commands = {}
-    local BannedCmd = {"kick","addowner","clearowner","spam"}
+    local BannedCmd = {"kick","addowner","clearowner","spam","rejoin"}
     local OwnerConns = {}
     local Spam = false
     
@@ -75,8 +76,8 @@ if Owner and Player.Name ~= Owner.Name then
     
     Owner.Chatted:Connect(OnChat)
     
-    AddCmd("tp",function(Plr,Vic)
-        if Plr == "all" or GetPlayer(Plr) == Player then
+    AddCmd("tp",function(Vic,Plr)
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
             Vic = GetPlayer(Vic).Character
             Character.Humanoid.Jump = true
             Root(Character).CFrame = Root(Vic).CFrame
@@ -84,7 +85,7 @@ if Owner and Player.Name ~= Owner.Name then
     end)
     
     AddCmd("bring",function(Plr,Speaker)
-        if Plr == "all" or GetPlayer(Plr) == Player then
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
             local Vic
             if Speaker then 
                 Vic = GetPlayer(Speaker).Character
@@ -96,19 +97,19 @@ if Owner and Player.Name ~= Owner.Name then
     end)
     
     AddCmd("reset",function(Plr)
-        if Plr == "all" or GetPlayer(Plr) == Player then
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
             Character.Humanoid.Health = 0
         end
     end)
     
     AddCmd("kick",function(Plr)
-        if Plr == "all" or GetPlayer(Plr) == Player then
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
             Player:Kick("Forcefully disconnected by owner: "..Owner.Name)
         end
     end)
     
     AddCmd("chat",function(Plr,...)
-        if Plr == "all" or GetPlayer(Plr) == Player then
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
             local Args = {...}
             local Text = ""
             for _,v in pairs(Args) do
@@ -118,45 +119,45 @@ if Owner and Player.Name ~= Owner.Name then
         end
     end)
 
-    AddCmd("walkto",function(Plr,Vic)
-        if Plr == "all" or GetPlayer(Plr) == Player then
+    AddCmd("walkto",function(Vic,Plr)
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
             Vic = GetPlayer(Vic).Character
             Character.Humanoid.WalkToPoint = Root(Vic).Position
         end
     end)
     
     AddCmd("jump",function(Plr)
-        if Plr == "all" or GetPlayer(Plr) == Player then
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
             Character.Humanoid.Jump = true
         end
     end)
     
     AddCmd("sit",function(Plr)
-        if Plr == "all" or GetPlayer(Plr) == Player then
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
             Character.Humanoid.Sit = true
         end
     end)
     
-    AddCmd("walkspeed",function(Plr,Speed)
-        if Plr == "all" or GetPlayer(Plr) == Player then
+    AddCmd("walkspeed",function(Speed,Plr)
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
             Character.Humanoid.WalkSpeed = Speed
         end
     end)
     
-    AddCmd("jumppower",function(Plr,Power)
-        if Plr == "all" or GetPlayer(Plr) == Player then
+    AddCmd("jumppower",function(Power,Plr)
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
             Character.Humanoid.JumpPower = Power
         end
     end)
     
-    AddCmd("hipheight",function(Plr,Height)
-        if Plr == "all" or GetPlayer(Plr) == Player then
+    AddCmd("hipheight",function(Height,Plr)
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
             Character.Humanoid.HipHeight = Height
         end
     end)
     
     AddCmd("spam",function(Plr,...)
-        if Plr == "all" or GetPlayer(Plr) == Player then
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
             local Args = {...}
             local Text = ""
             for _,v in pairs(Args) do
@@ -170,13 +171,13 @@ if Owner and Player.Name ~= Owner.Name then
     end)
     
     AddCmd("unspam",function(Plr)
-        if Plr == "all" or GetPlayer(Plr) == Player then
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
             Spam = false
         end
     end)
     
     AddCmd("rick",function(Plr)
-        if Plr == "all" or GetPlayer(Plr) == Player then
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
             local Text = "Never gonna give you up, never gonna let you down. Never gonna run around, desert you. Never gonna make you cry, never gonna say goodbye."
             Chat(Text)
         end
@@ -189,6 +190,16 @@ if Owner and Player.Name ~= Owner.Name then
         else
             game.TeleportService:TeleportToPlaceInstance(game.PlaceId,game.JobId,Player)
         end
+    end)
+    
+    AddCmd("sort",function()
+        local Position = Vector3.new((table.find(BotOrder,Player.Name))*3,0,0)
+        Root(Character).CFrame = Root(Owner.Character).CFrame * CFrame.new(Position)
+    end)
+    
+    AddCmd("line",function()
+        local Position = Vector3.new(0,0,(table.find(BotOrder,Player.Name))*3)
+        Root(Character).CFrame = Root(Owner.Character).CFrame * CFrame.new(Position)
     end)
     
     AddCmd("addowner",function(Plr)
@@ -209,7 +220,7 @@ if Owner and Player.Name ~= Owner.Name then
     end)
     
     AddCmd("cmds",function(Plr)
-        if Plr == "all" or GetPlayer(Plr) == Player then
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
             local Cmds = ""
             for Cmd,_ in pairs(Commands) do
                 if Cmds == "" then
