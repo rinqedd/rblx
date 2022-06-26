@@ -6,10 +6,7 @@ local Players = game.Players
 local Owner = Players:FindFirstChild(OwnerName)
 local Player = Players.LocalPlayer
 
-setfpscap(60)
-
 if Owner and Player.Name ~= Owner.Name then
-    setfpscap(30)
     game.RunService:Set3dRenderingEnabled(false)
     
     function Chat(Text)
@@ -22,10 +19,9 @@ if Owner and Player.Name ~= Owner.Name then
     end)
     
     local Commands = {}
-    local BannedCmd = {".kick",".addowner",".clearowner",".chat",".cmds"}
+    local BannedCmd = {".kick",".addowner",".clearowner",".spam"}
     local OwnerConns = {}
     local Spam = false
-    local Rick = false
     
     function Root(Char)
         return Char.HumanoidRootPart or Char.Torso
@@ -79,7 +75,7 @@ if Owner and Player.Name ~= Owner.Name then
     
     Owner.Chatted:Connect(OnChat)
     
-    AddCmd(".tp",function(Plr,Vic)
+    AddCmd("tp",function(Plr,Vic)
         if Plr == "all" or GetPlayer(Plr) == Player then
             Vic = GetPlayer(Vic).Character
             Character.Humanoid.Jump = true
@@ -87,7 +83,7 @@ if Owner and Player.Name ~= Owner.Name then
         end
     end)
     
-    AddCmd(".bring",function(Plr,Speaker)
+    AddCmd("bring",function(Plr,Speaker)
         if Plr == "all" or GetPlayer(Plr) == Player then
             local Vic
             if Speaker then 
@@ -99,19 +95,19 @@ if Owner and Player.Name ~= Owner.Name then
         end
     end)
     
-    AddCmd(".reset",function(Plr)
+    AddCmd("reset",function(Plr)
         if Plr == "all" or GetPlayer(Plr) == Player then
             Character.Humanoid.Health = 0
         end
     end)
     
-    AddCmd(".kick",function(Plr)
+    AddCmd("kick",function(Plr)
         if Plr == "all" or GetPlayer(Plr) == Player then
             Player:Kick("Forcefully disconnected by owner: "..Owner.Name)
         end
     end)
     
-    AddCmd(".chat",function(Plr,...)
+    AddCmd("chat",function(Plr,...)
         if Plr == "all" or GetPlayer(Plr) == Player then
             local Args = {...}
             local Text = ""
@@ -122,44 +118,44 @@ if Owner and Player.Name ~= Owner.Name then
         end
     end)
 
-    AddCmd(".walkto",function(Plr,Vic)
+    AddCmd("walkto",function(Plr,Vic)
         if Plr == "all" or GetPlayer(Plr) == Player then
             Vic = GetPlayer(Vic).Character
             Character.Humanoid.WalkToPoint = Root(Vic).Position
         end
     end)
     
-    AddCmd(".jump",function(Plr)
+    AddCmd("jump",function(Plr)
         if Plr == "all" or GetPlayer(Plr) == Player then
             Character.Humanoid.Jump = true
         end
     end)
     
-    AddCmd(".sit",function(Plr)
+    AddCmd("sit",function(Plr)
         if Plr == "all" or GetPlayer(Plr) == Player then
             Character.Humanoid.Sit = true
         end
     end)
     
-    AddCmd(".walkspeed",function(Plr,Speed)
+    AddCmd("walkspeed",function(Plr,Speed)
         if Plr == "all" or GetPlayer(Plr) == Player then
             Character.Humanoid.WalkSpeed = Speed
         end
     end)
     
-    AddCmd(".jumppower",function(Plr,Power)
+    AddCmd("jumppower",function(Plr,Power)
         if Plr == "all" or GetPlayer(Plr) == Player then
             Character.Humanoid.JumpPower = Power
         end
     end)
     
-    AddCmd(".hipheight",function(Plr,Height)
+    AddCmd("hipheight",function(Plr,Height)
         if Plr == "all" or GetPlayer(Plr) == Player then
             Character.Humanoid.HipHeight = Height
         end
     end)
     
-    AddCmd(".spam",function(Plr,...)
+    AddCmd("spam",function(Plr,...)
         if Plr == "all" or GetPlayer(Plr) == Player then
             local Args = {...}
             local Text = ""
@@ -173,25 +169,16 @@ if Owner and Player.Name ~= Owner.Name then
         end
     end)
     
-    AddCmd(".unspam",function(Plr)
+    AddCmd("unspam",function(Plr)
         if Plr == "all" or GetPlayer(Plr) == Player then
             Spam = false
         end
     end)
     
-    AddCmd(".rick",function(Plr)
+    AddCmd("rick",function(Plr)
         if Plr == "all" or GetPlayer(Plr) == Player then
             local Text = "Never gonna give you up, never gonna let you down. Never gonna run around, desert you. Never gonna make you cry, never gonna say goodbye."
-            Rick = true
-            while Rick and wait(1) do
-                Chat(Text)
-            end
-        end
-    end)
-    
-    AddCmd(".unrick",function(Plr)
-        if Plr == "all" or GetPlayer(Plr) == Player then
-            Rick = false
+            Chat(Text)
         end
     end)
     
@@ -204,7 +191,7 @@ if Owner and Player.Name ~= Owner.Name then
         end
     end)
     
-    AddCmd(".addowner",function(Plr)
+    AddCmd("addowner",function(Plr)
         local User = GetPlayer(Plr)
         local Conn = User.Chatted:Connect(function(Message)
             OnChat2(User.Name,Message)
@@ -213,7 +200,7 @@ if Owner and Player.Name ~= Owner.Name then
         Chat("Added owner "..User.Name)
     end)
     
-    AddCmd(".clearowner",function()
+    AddCmd("clearowner",function()
         for i,Conn in pairs(OwnerConns) do
             Conn:Disconnect()
             table.remove(OwnerConns,i)
@@ -221,7 +208,7 @@ if Owner and Player.Name ~= Owner.Name then
         Chat("Removed all owners")
     end)
     
-    AddCmd(".cmds",function(Plr)
+    AddCmd("cmds",function(Plr)
         if Plr == "all" or GetPlayer(Plr) == Player then
             local Cmds = ""
             for Cmd,_ in pairs(Commands) do
