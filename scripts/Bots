@@ -72,7 +72,7 @@ if Owner and Player.Name ~= Owner.Name then
         end
     end
     
-    function OnChat2(Message,Speaker)
+    function OnChat2(Speaker,Message)
         local Args = string.split(Message," ")
         local Cmd = Args[1]
         table.remove(Args,1)
@@ -230,7 +230,7 @@ if Owner and Player.Name ~= Owner.Name then
     AddCmd("tempowner",function(Plr)
         local User = GetPlayer(Plr)
         local Conn = User.Chatted:Connect(function(Message)
-            OnChat2(Message,User.Name)
+            OnChat2(User.Name,Message)
         end)
         table.insert(OwnerConns,Conn)
         Chat("Added temporary owner "..User.Name)
