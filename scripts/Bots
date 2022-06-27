@@ -22,6 +22,7 @@ if Owner and Player.Name ~= Owner.Name then
     local Commands = {}
     local BannedCmd = {"kick","addowner","clearowner","spam","rejoin"}
     local OwnerConns = {}
+    local Conns = {}
     local Spam = false
     
     function Root(Char)
@@ -209,6 +210,36 @@ if Owner and Player.Name ~= Owner.Name then
             end
             local Position = Vector3.new(0,0,(table.find(BotOrder,Player.Name))*3)
             Root(Character).CFrame = Root(Vic).CFrame * CFrame.new(Position)
+        end
+    end)
+    
+    AddCmd("orbit",function(Vic,Speed,Radius,Width,Plr)
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
+            Vic = Root(GetPlayer(Vic).Character)
+            
+            if not Speed then Speed = 8 end
+            if not Radius then Radius = 8 end
+            if not Width then Width = 1 end
+            local Rotation = CFrame.Angles(0,0,0)
+            local sin, cos = math.sin, math.cos
+            local RotSpeed = math.pi*2/Speed
+            Width = Width * Radius
+            
+            wait(table.find(BotOrder,Player.Name))
+            
+            local Rot = 0
+            
+            if Conns["Orbit"] then Conns["Orbit"]:Disconnect() end
+            Conns["Orbit"] = game.RunService.Stepped:connect(function(t, dt)
+                Rot = Rot + dt / RotSpeed
+                Root(Character).CFrame = Rotation * CFrame.new(sin(Rot)*Width, 0, cos(Rot)*Radius) * CFrame.new(Vic.Position)
+            end)
+        end
+    end)
+    
+    AddCmd("unorbit",function(Plr)
+        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
+            Conns["Orbit"]:Disconnect()
         end
     end)
     
