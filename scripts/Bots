@@ -1,6 +1,6 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
-local OwnerNames = {"rinqed","bigmanwithmorehead3"}
+local OwnerNames = {"rinqed","headshot56yt","bigmanwithforehead3"}
 
 local Players = game.Players
 local Player = Players.LocalPlayer
@@ -61,13 +61,13 @@ if not table.find(OwnerNames,Player.Name) then
         end
     end
     
-    function OnChat(Message)
+    function OnChat(Message,Speaker)
         local Args = string.split(Message," ")
         local Cmd = Args[1]
         table.remove(Args,1)
         
         if Commands[Cmd] then
-            RunCmd(Cmd,Args)
+            RunCmd(Cmd,Args,Speaker)
         end
     end
     
@@ -82,8 +82,10 @@ if not table.find(OwnerNames,Player.Name) then
     end
     
     for _,v in pairs(OwnerNames) do
-        if Players:FindFirstChild("v") then
-            v.Chatted:Connect(OnChat)
+        if Players:FindFirstChild(v) then
+            Players[v].Chatted:Connect(function(Message)
+                OnChat(Message,v)
+            end)
         end
     end
     
@@ -107,15 +109,7 @@ if not table.find(OwnerNames,Player.Name) then
     end)
     
     AddCmd("bring",function(Speaker)
-        local Vic
-        for _,v in pairs(OwnerNames) do
-            if Players:FindFirstChild(v) then
-                Vic = v.Character
-            end
-        end
-        if Speaker then 
-            Vic = GetPlayer(Speaker).Character
-        end
+        local Vic = GetPlayer(Speaker).Character
         Root(Character).CFrame = Root(Vic).CFrame
     end)
     
@@ -192,29 +186,13 @@ if not table.find(OwnerNames,Player.Name) then
     end)
     
     AddCmd("sort",function(Speaker)
-        local Vic
-        for _,v in pairs(OwnerNames) do
-            if Players:FindFirstChild(v) then
-                Vic = v.Character
-            end
-        end
-        if Speaker then 
-            Vic = GetPlayer(Speaker).Character
-        end
+        local Vic = GetPlayer(Speaker).Character
         local Position = Vector3.new((table.find(BotOrder,Player.Name))*3,0,0)
         Root(Character).CFrame = Root(Vic).CFrame * CFrame.new(Position)
     end)
     
     AddCmd("line",function(Speaker)
-        local Vic
-        for _,v in pairs(OwnerNames) do
-            if Players:FindFirstChild(v) then
-                Vic = v.Character
-            end
-        end
-        if Speaker then 
-            Vic = GetPlayer(Speaker).Character
-        end
+        local Vic = GetPlayer(Speaker).Character
         local Position = Vector3.new(0,0,(table.find(BotOrder,Player.Name))*3)
         Root(Character).CFrame = Root(Vic).CFrame * CFrame.new(Position)
     end)
@@ -263,16 +241,14 @@ if not table.find(OwnerNames,Player.Name) then
     end)
     
     AddCmd("cmds",function()
-        if Player.Name == "rinq_Bot" then
-            local Cmds = ""
-            for Cmd,_ in pairs(Commands) do
-                if Cmds == "" then
-                    Cmds = Cmds..Cmd
-                else
-                    Cmds = Cmds.." | "..Cmd
-                end
+        local Cmds = ""
+        for Cmd,_ in pairs(Commands) do
+            if Cmds == "" then
+                Cmds = Cmds..Cmd
+            else
+                Cmds = Cmds.." | "..Cmd
             end
-            Chat(Cmds)
         end
+        Chat(Cmds)
     end)
 end
