@@ -72,7 +72,7 @@ if Owner and Player.Name ~= Owner.Name then
         end
     end
     
-    function OnChat2(Message,User.Name)
+    function OnChat2(Message,Speaker)
         local Args = string.split(Message," ")
         local Cmd = Args[1]
         table.remove(Args,1)
