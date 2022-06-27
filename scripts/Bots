@@ -27,7 +27,7 @@ if Owner and Player.Name ~= Owner.Name then
     
     local BotOrder = {"rinq_Bot","rinq_Bot0","rinq_Bot1","rinq_Bot2","rinq_Bot3","rinq_Bot4","rinq_Bot5","rinq_Bot6","rinq_Bot8","rinq_Bot9"}
     local Commands = {}
-    local BannedCmd = {"kick","addowner","clearowner","spam","rejoin"}
+    local BannedCmd = {"kick","addowner","clearowner","rejoin"}
     local OwnerConns = {}
     local Conns = {}
     local Spam = false
@@ -56,7 +56,7 @@ if Owner and Player.Name ~= Owner.Name then
     
     function RunCmd(Cmd,Args,Speaker)
 	    if Cmd == "bring" or Cmd == "line" or Cmd == "sort" then
-            Commands[Cmd](unpack(Args),Speaker)
+            Commands[Cmd](Speaker)
         else
             Commands[Cmd](unpack(Args))
         end
@@ -72,7 +72,7 @@ if Owner and Player.Name ~= Owner.Name then
         end
     end
     
-    function OnChat2(Speaker,Message)
+    function OnChat2(Message,User.Name)
         local Args = string.split(Message," ")
         local Cmd = Args[1]
         table.remove(Args,1)
@@ -230,7 +230,7 @@ if Owner and Player.Name ~= Owner.Name then
     AddCmd("tempowner",function(Plr)
         local User = GetPlayer(Plr)
         local Conn = User.Chatted:Connect(function(Message)
-            OnChat2(User.Name,Message)
+            OnChat2(Message,User.Name)
         end)
         table.insert(OwnerConns,Conn)
         Chat("Added temporary owner "..User.Name)
