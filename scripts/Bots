@@ -6,6 +6,13 @@ local Players = game.Players
 local Owner = Players:FindFirstChild(OwnerName)
 local Player = Players.LocalPlayer
 
+local VirtualUser = game:GetService("VirtualUser")
+Player.Idled:connect(function()
+   VirtualUser:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+   wait(1)
+   VirtualUser:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+end)
+
 if Owner and Player.Name ~= Owner.Name then
     game.RunService:Set3dRenderingEnabled(false)
     
@@ -65,7 +72,7 @@ if Owner and Player.Name ~= Owner.Name then
         end
     end
     
-    function OnChat2(Speaker,Message)
+    function OnChat2(Message,Speaker)
         local Args = string.split(Message," ")
         local Cmd = Args[1]
         table.remove(Args,1)
@@ -77,112 +84,95 @@ if Owner and Player.Name ~= Owner.Name then
     
     Owner.Chatted:Connect(OnChat)
     
-    AddCmd("tp",function(Vic,Plr)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            Vic = GetPlayer(Vic).Character
-            Character.Humanoid.Jump = true
-            Root(Character).CFrame = Root(Vic).CFrame
-        end
+    AddCmd("tp",function(Vic)
+        Vic = GetPlayer(Vic).Character
+        Character.Humanoid.Jump = true
+        Root(Character).CFrame = Root(Vic).CFrame
     end)
     
-    AddCmd("bring",function(Plr,Speaker)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            local Vic = Owner.Character
-            if Speaker then 
-                Vic = GetPlayer(Speaker).Character
-            end
-            Root(Character).CFrame = Root(Vic).CFrame
-        end
+    AddCmd("follow",function(Vic)
+        if Conns["Follow"] then Conns["Follow"]:Disconnect()
+        Conns["Follow"] = game.RunService.RenderStepped:Connect(function()
+            Root(Character).CFrame = Root(Vic).CFrame * CFrame.new(0,0,3)
+        end)
     end)
     
-    AddCmd("reset",function(Plr)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            Character.Humanoid.Health = 0
-        end
+    AddCmd("unfollow",function()
+        Conns["Follow"]:Disconnect()
     end)
     
-    AddCmd("kick",function(Plr)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            Player:Kick("Forcefully disconnected by owner: "..Owner.Name)
+    AddCmd("bring",function(Speaker)
+        local Vic = Owner.Character
+        if Speaker then 
+            Vic = GetPlayer(Speaker).Character
         end
+        Root(Character).CFrame = Root(Vic).CFrame
     end)
     
-    AddCmd("chat",function(Plr,...)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            local Args = {...}
-            local Text = ""
-            for _,v in pairs(Args) do
-                Text = Text.." "..v
-            end
-            Chat(Text)
+    AddCmd("reset",function()
+        Character.Humanoid.Health = 0
+    end)
+    
+    AddCmd("kick",function()
+        Player:Kick("Forcefully disconnected by owner: "..Owner.Name)
+    end)
+    
+    AddCmd("chat",function(...)
+        local Args = {...}
+        local Text = ""
+        for _,v in pairs(Args) do
+            Text = Text.." "..v
         end
+        Chat(Text)
     end)
 
-    AddCmd("walkto",function(Vic,Plr)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            Vic = GetPlayer(Vic).Character
-            Character.Humanoid.WalkToPoint = Root(Vic).Position
-        end
+    AddCmd("walkto",function(Vic)
+        Vic = GetPlayer(Vic).Character
+        Character.Humanoid.WalkToPoint = Root(Vic).Position
     end)
     
-    AddCmd("jump",function(Plr)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            Character.Humanoid.Jump = true
-        end
+    AddCmd("jump",function()
+        Character.Humanoid.Jump = true
     end)
     
-    AddCmd("sit",function(Plr)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            Character.Humanoid.Sit = true
-        end
+    AddCmd("sit",function()
+        Character.Humanoid.Sit = true
     end)
     
-    AddCmd("walkspeed",function(Speed,Plr)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            Character.Humanoid.WalkSpeed = Speed
-        end
+    AddCmd("walkspeed",function(Speed)
+        Character.Humanoid.WalkSpeed = Speed
     end)
     
-    AddCmd("jumppower",function(Power,Plr)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            Character.Humanoid.JumpPower = Power
-        end
+    AddCmd("jumppower",function(Power)
+        Character.Humanoid.JumpPower = Power
     end)
     
-    AddCmd("hipheight",function(Height,Plr)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            Character.Humanoid.HipHeight = Height
-        end
+    AddCmd("hipheight",function(Height)
+        Character.Humanoid.HipHeight = Height
     end)
     
-    AddCmd("spam",function(Plr,...)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            local Args = {...}
-            local Text = ""
-            for _,v in pairs(Args) do
-                Text = Text.." "..v
-            end
-            Spam = true
-            while Spam and wait(1) do
-                Chat(Text)
-            end
+    AddCmd("spam",function(...)
+        local Args = {...}
+        local Text = ""
+        for _,v in pairs(Args) do
+            Text = Text.." "..v
         end
-    end)
-    
-    AddCmd("unspam",function(Plr)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            Spam = false
-        end
-    end)
-    
-    AddCmd("rick",function(Plr)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            local Text = "Never gonna give you up, never gonna let you down. Never gonna run around, desert you. Never gonna make you cry, never gonna say goodbye."
+        Spam = true
+        while Spam and wait(1) do
             Chat(Text)
         end
     end)
     
-    AddCmd("rejoin",function(Plr)
+    AddCmd("unspam",function()
+        Spam = false
+    end)
+    
+    AddCmd("rick",function()
+        local Text = "Never gonna give you up, never gonna let you down. Never gonna run around, desert you. Never gonna make you cry, never gonna say goodbye."
+        Chat(Text)
+    end)
+    
+    AddCmd("rejoin",function()
         syn.queue_on_teleport([[loadstring(game:HttpGet("https://github.com/rinqedd/rblx/blob/main/scripts/Bots"))()]])
         if #Players:GetPlayers() <= 1 then
             game.TeleportService:Teleport(game.PlaceId,Player)
@@ -191,77 +181,69 @@ if Owner and Player.Name ~= Owner.Name then
         end
     end)
     
-    AddCmd("sort",function(Plr,Speaker)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            local Vic = Owner.Character
-            if Speaker then 
-                Vic = GetPlayer(Speaker).Character
-            end
-            local Position = Vector3.new((table.find(BotOrder,Player.Name))*3,0,0)
-            Root(Character).CFrame = Root(Vic).CFrame * CFrame.new(Position)
+    AddCmd("sort",function(Speaker)
+        local Vic = Owner.Character
+        if Speaker then 
+            Vic = GetPlayer(Speaker).Character
         end
+        local Position = Vector3.new((table.find(BotOrder,Player.Name))*3,0,0)
+        Root(Character).CFrame = Root(Vic).CFrame * CFrame.new(Position)
     end)
     
-    AddCmd("line",function(Plr,Speaker)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            local Vic = Owner.Character
-            if Speaker then 
-                Vic = GetPlayer(Speaker).Character
-            end
-            local Position = Vector3.new(0,0,(table.find(BotOrder,Player.Name))*3)
-            Root(Character).CFrame = Root(Vic).CFrame * CFrame.new(Position)
+    AddCmd("line",function(Speaker)
+        local Vic = Owner.Character
+        if Speaker then 
+            Vic = GetPlayer(Speaker).Character
         end
+        local Position = Vector3.new(0,0,(table.find(BotOrder,Player.Name))*3)
+        Root(Character).CFrame = Root(Vic).CFrame * CFrame.new(Position)
     end)
     
-    AddCmd("orbit",function(Vic,Speed,Radius,Width,Plr)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            Vic = Root(GetPlayer(Vic).Character)
+    AddCmd("orbit",function(Vic,Speaker,Speed,Radius,Width)
+        Vic = Root(GetPlayer(Vic).Character)
             
-            if not Speed then Speed = 8 end
-            if not Radius then Radius = 8 end
-            if not Width then Width = 1 end
-            local Rotation = CFrame.Angles(0,0,0)
-            local sin, cos = math.sin, math.cos
-            local RotSpeed = math.pi*2/Speed
-            Width = Width * Radius
-            
-            wait(table.find(BotOrder,Player.Name))
-            
-            local Rot = 0
-            
-            if Conns["Orbit"] then Conns["Orbit"]:Disconnect() end
-            Conns["Orbit"] = game.RunService.Stepped:connect(function(t, dt)
-                Rot = Rot + dt / RotSpeed
-                Root(Character).CFrame = Rotation * CFrame.new(sin(Rot)*Width, 0, cos(Rot)*Radius) * CFrame.new(Vic.Position)
-            end)
-        end
+        if not Speed then Speed = 8 end
+        if not Radius then Radius = 8 end
+        if not Width then Width = 1 end
+        local Rotation = CFrame.Angles(0,0,0)
+        local sin, cos = math.sin, math.cos
+        local RotSpeed = math.pi*2/Speed
+        Width = Width * Radius
+        
+        wait(table.find(BotOrder,Player.Name))
+        
+        local Rot = 0
+        
+        if Conns["Orbit"] then Conns["Orbit"]:Disconnect() end
+        Conns["Orbit"] = game.RunService.Stepped:connect(function(t, dt)
+            Rot = Rot + dt / RotSpeed
+            Root(Character).CFrame = Rotation * CFrame.new(sin(Rot)*Width, 0, cos(Rot)*Radius) * CFrame.new(Vic.Position)
+        end)
     end)
     
-    AddCmd("unorbit",function(Plr)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
-            Conns["Orbit"]:Disconnect()
-        end
+    AddCmd("unorbit",function()
+        Conns["Orbit"]:Disconnect()
     end)
     
-    AddCmd("addowner",function(Plr)
+    AddCmd("tempowner",function(Plr)
         local User = GetPlayer(Plr)
         local Conn = User.Chatted:Connect(function(Message)
-            OnChat2(User.Name,Message)
+            OnChat2(Message,User.Name)
         end)
         table.insert(OwnerConns,Conn)
-        Chat("Added owner "..User.Name)
+        Chat("Added temporary owner "..User.Name)
     end)
     
-    AddCmd("clearowner",function()
+    AddCmd("cleartempowner",function()
         for i,Conn in pairs(OwnerConns) do
             Conn:Disconnect()
             table.remove(OwnerConns,i)
         end
-        Chat("Removed all owners")
+        Chat("Removed all temporary owners")
     end)
     
-    AddCmd("cmds",function(Plr)
-        if not Plr or Plr == "all" or GetPlayer(Plr) == Player then
+    AddCmd("cmds",function()
+        if Player.Name == "rinq_Bot" then
             local Cmds = ""
             for Cmd,_ in pairs(Commands) do
                 if Cmds == "" then
