@@ -1,9 +1,8 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
-local OwnerName = "rinqed"
+local OwnerNames = {"rinqed","bigmanwithmorehead3"}
 
 local Players = game.Players
-local Owner = Players:FindFirstChild(OwnerName)
 local Player = Players.LocalPlayer
 
 local VirtualUser = game:GetService("VirtualUser")
@@ -13,7 +12,7 @@ Player.Idled:connect(function()
    VirtualUser:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 end)
 
-if Owner and Player.Name ~= Owner.Name then
+if not table.find(OwnerNames,Player.Name) then
     game.RunService:Set3dRenderingEnabled(false)
     
     function Chat(Text)
@@ -82,7 +81,11 @@ if Owner and Player.Name ~= Owner.Name then
         end
     end
     
-    Owner.Chatted:Connect(OnChat)
+    for _,v in pairs(OwnerNames) do
+        if Players:FindFirstChild("v") then
+            v.Chatted:Connect(OnChat)
+        end
+    end
     
     AddCmd("tp",function(Vic)
         Vic = GetPlayer(Vic).Character
@@ -104,7 +107,12 @@ if Owner and Player.Name ~= Owner.Name then
     end)
     
     AddCmd("bring",function(Speaker)
-        local Vic = Owner.Character
+        local Vic
+        for _,v in pairs(OwnerNames) do
+            if Players:FindFirstChild(v) then
+                Vic = v.Character
+            end
+        end
         if Speaker then 
             Vic = GetPlayer(Speaker).Character
         end
@@ -116,7 +124,7 @@ if Owner and Player.Name ~= Owner.Name then
     end)
     
     AddCmd("kick",function()
-        Player:Kick("Forcefully disconnected by owner: "..Owner.Name)
+        Player:Kick("Forcefully disconnected by owner.")
     end)
     
     AddCmd("chat",function(...)
@@ -184,7 +192,12 @@ if Owner and Player.Name ~= Owner.Name then
     end)
     
     AddCmd("sort",function(Speaker)
-        local Vic = Owner.Character
+        local Vic
+        for _,v in pairs(OwnerNames) do
+            if Players:FindFirstChild(v) then
+                Vic = v.Character
+            end
+        end
         if Speaker then 
             Vic = GetPlayer(Speaker).Character
         end
@@ -193,7 +206,12 @@ if Owner and Player.Name ~= Owner.Name then
     end)
     
     AddCmd("line",function(Speaker)
-        local Vic = Owner.Character
+        local Vic
+        for _,v in pairs(OwnerNames) do
+            if Players:FindFirstChild(v) then
+                Vic = v.Character
+            end
+        end
         if Speaker then 
             Vic = GetPlayer(Speaker).Character
         end
