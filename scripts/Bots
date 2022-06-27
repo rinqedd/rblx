@@ -91,7 +91,7 @@ if Owner and Player.Name ~= Owner.Name then
     end)
     
     AddCmd("follow",function(Vic)
-        if Conns["Follow"] then Conns["Follow"]:Disconnect()
+        if Conns["Follow"] then Conns["Follow"]:Disconnect() end
         Conns["Follow"] = game.RunService.RenderStepped:Connect(function()
             Root(Character).CFrame = Root(Vic).CFrame * CFrame.new(0,0,3)
         end)
