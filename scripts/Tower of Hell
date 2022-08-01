@@ -135,7 +135,7 @@ CopyAppealText:AddToolTip("This is for if you get banned, you don't need to type
 
 InfoSec:CreateButton("Copy Discord Account",function()
     if setclipboard then
-        setclipboard("rinq#9949")
+        setclipboard("rinq#1000")
     end
 end)
 
